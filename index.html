@@ -4,57 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人网页</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            background-color: #f9f9f9;
             color: #333;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
         }
         header {
             background: #333;
             color: #fff;
-            padding: 20px 0;
+            padding: 60px 20px;
             text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         header h1 {
             margin: 0;
-            font-size: 2em;
+            font-size: 3em;
+            font-weight: 700;
+        }
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.4em;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
         }
         .main-content {
-            padding: 20px 0;
+            padding: 40px 0;
         }
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 60px;
         }
         .section h2 {
-            border-bottom: 2px solid #333;
+            border-bottom: 4px solid #007bff;
             padding-bottom: 10px;
+            font-size: 2.2em;
+            color: #007bff;
+            margin-bottom: 20px;
         }
         .project {
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .project:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
         .project h3 {
             margin-top: 0;
+            color: #007bff;
+            font-size: 1.6em;
+        }
+        .project p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .project::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(0, 123, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+            transition: transform 0.6s ease;
+            z-index: 0;
+        }
+        .project:active::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .project > * {
+            position: relative;
+            z-index: 1;
+        }
+        .links {
+            margin-top: 40px;
+        }
+        .links a {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: #007bff;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .links a:hover::after {
+            transform: scaleX(1);
         }
         footer {
             background: #333;
             color: #fff;
             text-align: center;
-            padding: 10px 0;
+            padding: 20px 20px;
             position: fixed;
             width: 100%;
             bottom: 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+        footer p {
+            margin: 0;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -86,10 +167,21 @@
             </div>
             <!-- 添加更多项目 -->
         </section>
+
+        <!-- 超链接部分 -->
+        <section class="section">
+            <h2>相关链接</h2>
+            <div class="links">
+                <a href="https://www.example.com" target="_blank">示例链接 1</a>
+                <a href="https://www.example2.com" target="_blank">示例链接 2</a>
+                <a href="https://www.example3.com" target="_blank">示例链接 3</a>
+                <!-- 添加更多链接 -->
+            </div>
+        </section>
     </div>
 
     <footer>
-        <p>&copy; 2024 你的名字 | 联系方式: <a href="mailto:your.email@example.com" style="color: #fff;">your.email@example.com</a></p>
+        <p>&copy; 2024 你的名字 | 联系方式: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
     </footer>
 </body>
 </html>
