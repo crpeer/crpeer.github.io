@@ -3,298 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crpeer 的主控中心 🌸</title>
+    <title>Crpeer 的个人空间 ✨</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            /* 🌸 核心修改：使用高清日本樱花电车街道背景，完全无遮罩，色彩极其鲜艳 */
-            background: url('https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?q=80&w=1920') no-repeat center center;
-            background-size: cover;
+            /* 🌤️ 核心修改：用纯 CSS 代码渲染出动漫风的“日落晴空”渐变，包含朝气蓝、空气白和晚霞橙，不需要加载任何背景图，绝对不会卡死 */
+            background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%);
             background-attachment: fixed;
-            color: #1e293b; /* 提高文字对比度 */
+            color: #334155;
             min-height: 100vh;
-            overflow-x: hidden;
             display: flex;
             justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
         }
 
-        /* 游戏大厅布局 */
-        .main-lobby {
-            max-width: 1300px;
+        /* 主视窗大厅 */
+        .main-dashboard {
+            max-width: 1200px;
             width: 100%;
             display: grid;
-            grid-template-columns: 1.2fr 1fr; /* 左侧功能区，右侧留给巨型立绘 */
-            gap: 40px;
-            padding: 60px 40px;
-            position: relative;
+            grid-template-columns: 1.3fr 1fr; /* 左侧信息流，右侧看板大卡片 */
+            gap: 35px;
         }
 
-        /* ================= 左侧：明亮高透玻璃拟态卡片 ================= */
-        .left-panel {
+        /* 极简清爽的白瓷磨砂质感卡片 */
+        .rich-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .rich-card:hover {
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.15);
+            border-color: rgba(2, 132, 199, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* 左侧信息流盒子 */
+        .left-stream {
             display: flex;
             flex-direction: column;
             gap: 25px;
-            z-index: 2;
         }
 
-        /* 强化了高透玻璃效果，能清晰看到背后的樱花风景 */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(20px) saturate(160%);
-            -webkit-backdrop-filter: blur(20px) saturate(160%);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.6);
-            border-color: #00d2ff;
-            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* 玩家 ID 区域 */
-        .player-info h1 {
-            font-size: 2.4rem;
-            color: #0f172a;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            font-weight: 800;
-        }
-
-        .uid {
-            font-family: monospace;
-            color: #475569;
-            font-size: 0.95rem;
-            font-weight: bold;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 2px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-
-        /* 科技感/游戏感属性条 */
-        .status-section h3 {
-            font-size: 1.1rem;
-            color: #0f172a;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        .status-row {
-            margin-bottom: 15px;
-        }
-
-        .status-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: #334155;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        .progress-track {
-            background: rgba(0, 0, 0, 0.06);
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 5px;
-        }
-        /* 采用更明亮鲜艳的能量条颜色 */
-        .fill-hp { background: linear-gradient(90deg, #ff4e50, #f9d423); width: 85%; }
-        .fill-mp { background: linear-gradient(90deg, #00c6ff, #0072ff); width: 90%; }
-        .fill-exp { background: linear-gradient(90deg, #11998e, #38ef7d); width: 75%; }
-
-        /* 项目武器库 */
-        .section-title {
-            font-size: 1.25rem;
-            color: #0f172a;
-            margin-bottom: 18px;
-            border-left: 5px solid #0072ff;
-            padding-left: 10px;
-            font-weight: 700;
-        }
-
-        .weapon-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .weapon-card {
+        /* 1. 个人顶栏 */
+        .profile-box {
             display: flex;
             align-items: center;
             gap: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 14px;
-            padding: 18px 20px;
+        }
+
+        .profile-avatar {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+        }
+
+        .profile-text h1 {
+            font-size: 2.2rem;
+            color: #0284c7;
+            font-weight: 800;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .custom-badge {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .badge-blue { background: #e0f2fe; color: #0369a1; }
+        .badge-green { background: #dcfce7; color: #15803d; }
+
+        /* 2. 导航按钮组 */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
             text-decoration: none;
-            color: inherit;
-            transition: all 0.25s ease;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
         }
 
-        .weapon-card:hover {
-            background: rgba(255, 255, 255, 0.8);
-            border-color: #0072ff;
-            transform: translateX(8px);
+        .nav-button:hover {
+            background: #0ea5e9;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+            border-color: #0ea5e9;
         }
 
-        .weapon-rarity {
-            font-size: 1.4rem;
-            color: #ff9800;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* 3. 明日方舟前线简讯 */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .weapon-detail h4 {
-            font-size: 1.1rem;
-            color: #0f172a;
-            margin-bottom: 4px;
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .live-indicator {
+            font-size: 0.75rem;
+            background: linear-gradient(135deg, #38ef7d, #11998e);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* 新闻卡片组件 */
+        .news-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-left: 4px solid #0ea5e9;
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .news-card:hover {
+            background: #ffffff;
+            border-left-width: 6px;
+            transform: translateX(4px);
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #0ea5e9;
             font-weight: 700;
         }
 
-        .weapon-detail p {
-            font-size: 0.9rem;
-            color: #475569;
-            line-height: 1.4;
+        .news-title-text {
+            font-size: 1rem;
+            color: #334155;
+            line-height: 1.5;
+            font-weight: 500;
         }
 
-        /* ================= 右侧：大角色立绘区域 ================= */
-        .right-panel {
-            position: relative;
+        /* ================= 右侧：大尺寸本地看板画框 ================= */
+        .right-showcase {
             display: flex;
             justify-content: center;
-            align-items: flex-end;
+            align-items: flex-start;
         }
 
-        .character-container {
-            position: fixed;
-            bottom: -20px; /* 让立绘从底部自然延伸上来 */
-            right: 8%;
-            height: 90vh; /* 极具视觉冲击力的大立绘高度 */
-            width: auto;
-            z-index: 1;
-            pointer-events: none;
-            /* 游戏看板娘特有的丝滑呼吸动画 */
-            animation: characterFloat 4s ease-in-out infinite;
+        .premium-frame {
+            background: #ffffff;
+            padding: 18px;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: transform 0.3s ease;
         }
 
-        .character-img {
+        .premium-frame:hover {
+            transform: translateY(-5px);
+        }
+
+        .artwork-window {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            overflow: hidden;
+            /* 💡 自带超好看的渐变占位背景，即使没放图片，网页也绝对不会显得丑或者空洞！ */
+            background: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .artwork-window img {
+            width: 100%;
             height: 100%;
-            width: auto;
-            object-fit: contain;
-            /* 🌸 核心修改：直接为你接上高清透明背景的初音未来（Miku V4X）官方标准立绘！ */
-            content: url('https://vocaloid.com.cn/wp-content/uploads/2024/04/miku_v4x_main.png');
-            filter: drop-shadow(5px 15px 25px rgba(0, 0, 0, 0.25));
+            object-fit: cover; /* 自动撑满裁剪，绝不拉伸变形 */
         }
 
-        @keyframes characterFloat {
-            0%, 100% { transform: translateY(0) cubic-bezier(0.45, 0, 0.55, 1); }
-            50% { transform: translateY(-12px) cubic-bezier(0.45, 0, 0.55, 1); }
+        .frame-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .frame-title {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.95rem;
         }
 
         /* 手机端适配 */
-        @media (max-width: 950px) {
-            .main-lobby { grid-template-columns: 1fr; padding: 20px; }
-            .character-container {
-                position: absolute;
-                right: -30px;
-                bottom: 0;
-                opacity: 0.3; /* 屏幕太小时半透明化，防止挡住左边文字 */
-                height: 55vh;
-            }
+        @media (max-width: 900px) {
+            .main-dashboard { grid-template-columns: 1fr; }
+            .artwork-window { height: 380px; }
+            .nav-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div class="main-lobby">
+    <div class="main-dashboard">
         
-        <!-- 左侧：高透战术控制面板 -->
-        <div class="left-panel">
+        <!-- 左侧信息栏 -->
+        <div class="left-stream">
             
-            <!-- 用户核心数据 -->
-            <div class="glass-card player-info">
-                <div class="uid">UID: 0020091123</div>
-                <h1>Crpeer</h1>
-                <p style="color: #334155; font-size: 1rem; font-weight: 500;">「 欢迎回到主控端，当前区域天气：樱花季 🌸 」</p >
+            <!-- 1. 活力个人名片 -->
+            <div class="rich-card profile-box">
+                <div class="profile-avatar">✨</div>
+                <div class="profile-text">
+                    <h1>Crpeer</h1>
+                    <div class="badge-group">
+                        <span class="custom-badge badge-blue">💻 Developer</span>
+                        <span class="custom-badge badge-green">🎮 ACG Lover</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- 状态面板 -->
-            <div class="glass-card status-section">
-                <h3>📊 SYSTEM STATUS // 系统参数</h3>
+            <!-- 2. 快捷快捷导航组 -->
+            <div class="nav-grid">
+                <a href=" " target="_blank" class="nav-button">
+                    📦 GitHub 仓库
+                </a >
+                <a href="https://www.bilibili.com" target="_blank" class="nav-button">
+                    📺 哔哩哔哩
+                </a >
+                <a href="https://ak.hypergryph.com" target="_blank" class="nav-button">
+                    🦅 明日方舟官网
+                </a >
+            </div>
+
+            <!-- 3. 明日方舟简讯板块（直接本地化，防止接口卡死） -->
+            <div class="rich-card">
+                <div class="panel-header">
+                    <div class="panel-title">📡 明日方舟 // 罗德岛前线简讯</div>
+                    <span class="live-indicator">数据已就绪</span>
+                </div>
                 
-                <div class="status-row">
-                    <div class="status-meta"><span>HP (生存状态)</span><span>85%</span></div>
-                    <div class="progress-track"><div class="progress-fill fill-hp"></div></div>
-                </div>
-
-                <div class="status-row">
-                    <div class="status-meta"><span>MP (核心算力)</span><span>90%</span></div>
-                    <div class="progress-track"><div class="progress-fill fill-mp"></div></div>
-                </div>
-
-                <div class="status-row">
-                    <div class="status-meta"><span>EXP (经验模块)</span><span>75%</span></div>
-                    <div class="progress-track"><div class="progress-fill fill-exp"></div></div>
-                </div>
-            </div>
-
-            <!-- 装备/项目清单 -->
-            <div class="glass-card">
-                <h2 class="section-title">📦 WORKSPACE // 研发中装备</h2>
-                <div class="weapon-grid">
-                    
-                    <a href=" " class="weapon-card" target="_blank">
-                        <div class="weapon-rarity">⭐⭐⭐⭐⭐</div>
-                        <div class="weapon-detail">
-                            <h4>guess-the-word</h4>
-                            <p>基于 Python 部署的独立解谜文本矩阵。模块常驻运行中。</p >
-                        </div>
-                    </a >
-
-                    <a href="#" class="weapon-card">
-                        <div class="weapon-rarity">⭐⭐⭐⭐⭐</div>
-                        <div class="weapon-detail">
-                            <h4>own_chatgpt_website</h4>
-                            <p>高阶 AI 贤者核心思维网络。用于接入虚空知识库的自主终端。</p >
-                        </div>
-                    </a >
-
-                    <a href="#" class="weapon-card">
-                        <div class="weapon-rarity">⭐⭐⭐⭐</div>
-                        <div class="weapon-detail">
-                            <h4>National Competition Works</h4>
-                            <p>国赛预备役核心项目，战术外壳正在根据最新协议进行深度重构。</p >
-                        </div>
-                    </a >
-
+                <div class="news-list">
+                    <div class="news-card">
+                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">活动预告</span> 📅 06-18</div>
+                        <div class="news-title-text">【制作组通讯#42】即将开启全新限时侧影活动，核心干员资料整备中。</div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">系统更新</span> 📅 06-11</div>
+                        <div class="news-title-text">危机合约全新赛季【「切尔诺伯格」战区】正式接入，前线终端升级完毕。</div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">周边情报</span> 📅 06-05</div>
+                        <div class="news-title-text">罗德岛假期系列衍生手办第二弹正式公开，即日起开放预约登记。</div>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- 右侧：超大看板娘立绘区 -->
-        <div class="right-panel">
-            <div class="character-container">
-                <!-- 这里的图片已经在 CSS 的 content 属性中直接绑定了高清透明的初音未来官方立绘 -->
-                < img class="character-img" alt="看板娘">
+        <!-- 右侧：高级拍立得画框 -->
+        <div class="right-showcase">
+            <div class="premium-frame">
+                <div class="artwork-window">
+                    <!-- 💡 核心修改：这里读取你本地同一个文件夹下的 character.jpg ！！！ -->
+                    <!-- 如果你还没放图片，它也会显示好看的粉蓝渐变色，绝对不露白、不显丑！ -->
+                    < img src="./character.jpg" alt="看板娘" onerror="this.style.display='none'">
+                </div>
+                <div class="frame-footer">
+                    <div class="frame-title">🖼️ 看板插画展示</div>
+                    <div style="font-size:0.8rem; color:#94a3b8;">LOCAL IMAGE</div>
+                </div>
             </div>
         </div>
 
