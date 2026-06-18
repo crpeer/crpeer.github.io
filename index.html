@@ -1,187 +1,257 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人网页</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Crpeer 的次元空间 ✨</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
+        /* 全局可爱动感样式 */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
-        header {
-            background: #333;
-            color: #fff;
-            padding: 60px 20px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        body {
+            /* 梦幻粉紫二次元渐变背景 */
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 40%, #e8dbfc 100%);
+            background-attachment: fixed;
+            color: #4a384f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
         }
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-            font-weight: 700;
-        }
-        header p {
-            margin: 10px 0 0;
-            font-size: 1.4em;
-        }
+
+        /* 玻璃拟态主卡片容器 */
         .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            overflow: hidden;
-        }
-        .main-content {
-            padding: 40px 0;
-        }
-        .section {
-            margin-bottom: 60px;
-        }
-        .section h2 {
-            border-bottom: 4px solid #007bff;
-            padding-bottom: 10px;
-            font-size: 2.2em;
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-        .project {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px rgba(244, 143, 177, 0.2);
+            padding: 40px;
             margin-bottom: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        .project:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+
+        .container:hover {
+            box-shadow: 0 12px 40px rgba(244, 143, 177, 0.4);
+            border-color: rgba(255, 182, 193, 0.8);
         }
-        .project h3 {
-            margin-top: 0;
-            color: #007bff;
-            font-size: 1.6em;
-        }
-        .project p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-        .project::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: rgba(0, 123, 255, 0.2);
-            transform: translate(-50%, -50%) scale(0);
-            border-radius: 50%;
-            transition: transform 0.6s ease;
-            z-index: 0;
-        }
-        .project:active::before {
-            transform: translate(-50%, -50%) scale(1);
-        }
-        .project > * {
-            position: relative;
-            z-index: 1;
-        }
-        .links {
-            margin-top: 40px;
-        }
-        .links a {
-            display: block;
-            color: #007bff;
-            text-decoration: none;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            transition: color 0.3s ease, border-bottom 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .links a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 3px;
-            background: #007bff;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        .links a:hover::after {
-            transform: scaleX(1);
-        }
-        footer {
-            background: #333;
-            color: #fff;
+
+        /* 头部个人信息 */
+        .header {
             text-align: center;
-            padding: 20px 20px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
         }
-        footer p {
-            margin: 0;
+
+        /* 虚拟头像 */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 15px rgba(244, 143, 177, 0.4);
+            background: #ffb6c1; /* 默认粉色，之后你可以换成你喜欢的动漫头像链接 */
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            transition: transform 0.5s ease;
+            cursor: pointer;
         }
-        footer a {
-            color: #fff;
+        
+        .avatar:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #ff6584;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .motto {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #7d6680;
+        }
+
+        /* 二次元角色属性面板 */
+        .status-panel {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 35px;
+        }
+
+        .status-title {
+            font-weight: bold;
+            color: #ff6584;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-bar {
+            margin-bottom: 12px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .bar-bg {
+            background: rgba(0, 0, 0, 0.05);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 1s ease-in-out;
+        }
+
+        .hp { background: #ff6584; width: 85%; }
+        .mp { background: #b388ff; width: 90%; }
+        .exp { background: #ffd54f; width: 65%; }
+
+        /* 项目成就区域 */
+        h2.section-title {
+            color: #ff6584;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            border-left: 5px solid #ff6584;
+            padding-left: 10px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
             text-decoration: none;
+            color: inherit;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #ffb6c1;
+            box-shadow: 0 10px 20px rgba(244, 143, 177, 0.15);
+        }
+
+        .project-icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .project-card h3 {
+            font-size: 1.1rem;
+            color: #4a384f;
+            margin-bottom: 6px;
+        }
+
+        .project-card p {
+            font-size: 0.85rem;
+            color: #7d6680;
+            line-height: 1.4;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9c82a0;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>CRPEER</h1>
-            <p>欢迎来到我的个人网页</p>
+
+    <div class="container">
+        <!-- 头部看板 -->
+        <div class="header">
+            <!-- 鼠标悬停在头像上会转圈哦 -->
+            <div class="avatar">🐱</div> 
+            <h1>Crpeer's Secret Base</h1>
+            <p class="motto">「兴趣使然的日常，以及未完待续的冒险 ✨」</p >
         </div>
-    </header>
 
-    <div class="container main-content">
-        <!-- 个人简介 -->
-        <section class="section">
-            <h2>个人简介</h2>
-            <p>你好，我是CRPEER。我是一名学生，什么都不会。在这里你可以了解我的项目和工作成果。</p>
-        </section>
+        <!-- 角色属性面板（超有ACG代入感） -->
+        <div class="status-panel">
+            <div class="status-title">📊 冒险者状态面板</div>
+            
+            <div class="status-bar">
+                <div class="bar-label"><span>HP (头发浓密度)</span><span>85/100</span></div>
+                <div class="bar-bg"><div class="bar-fill hp"></div></div>
+            </div>
+            
+            <div class="status-bar">
+                <div class="bar-label"><span>MP (写代码的干劲)</span><span>90/100</span></div>
+                <div class="bar-bg"><div class="bar-fill mp"></div></div>
+            </div>
 
-        <!-- 项目展示 -->
-        <section class="section">
-            <h2>项目展示</h2>
-            <div class="project">
-                <h3>crpeer.github.io</h3>
-                <p>[本网站的源码！]。</p>
+            <div class="status-bar">
+                <div class="bar-label"><span>EXP (前行进度条)</span><span>65%</span></div>
+                <div class="bar-bg"><div class="bar-fill exp"></div></div>
             </div>
-            <div class="project">
-                <h3>项目名称 2</h3>
-                <p>[项目描述 2]。</p>
-            </div>
-            <!-- 添加更多项目 -->
-        </section>
+        </div>
 
-        <!-- 超链接部分 -->
-        <section class="section">
-            <h2>相关链接</h2>
-            <div class="links">
-                <a href="https://github.com/crpeer/crpeer.github.io" target="_blank">crpeer.github.io</a>
-                <a href="https://www.example2.com" target="_blank">示例链接 2</a>
-                <a href="https://www.example3.com" target="_blank">示例链接 3</a>
-                <!-- 添加更多链接 -->
-            </div>
-        </section>
+        <!-- 装备与成就（你的项目列表） -->
+        <h2 class="section-title">🔮 正在研发的魔法道具</h2>
+        <div class="project-grid">
+            
+            <!-- 项目 1 -->
+            <a href=" " class="project-card" target="_blank">
+                <div class="project-icon">🎮</div>
+                <h3>guess-the-word</h3>
+                <p>一个用 Python 编写的趣味猜单词小游戏。用最纯粹的代码，构建属于勇者的文字解谜冒险！</p >
+            </a >
+
+            <!-- 项目 2 -->
+            <a href="#" class="project-card">
+                <div class="project-icon">🤖</div>
+                <h3>own_chatgpt_website</h3>
+                <p>专属的 AI 智能对话网站。连接未来科技的纽带，召唤强大的 AI 贤者为你解答世间一切谜题。</p >
+            </a >
+
+            <!-- 项目 3 -->
+            <a href="#" class="project-card">
+                <div class="project-icon">🏆</div>
+                <h3>National Competition Works</h3>
+                <p>正在精心筹备和打磨的全国比赛作品。蕴含着全神贯注的力量，向着最高的荣誉进发！</p >
+            </a >
+
+        </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 CRPEER | 联系方式: <a href="mailto:wpytheemail@126.com">wpytheemail@126.com</a></p>
+        <p>© 2026 Crpeer. Powered by Magic & GitHub Pages.</p >
     </footer>
+
 </body>
 </html>
