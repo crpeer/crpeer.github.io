@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crpeer 的次元空间 ✨</title>
+    <title>Crpeer 的主控中心 🌸</title>
     <style>
-        /* 全局可爱动感样式 */
         * {
             margin: 0;
             padding: 0;
@@ -14,244 +13,292 @@
         }
 
         body {
-            /* 梦幻粉紫二次元渐变背景 */
-            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 40%, #e8dbfc 100%);
+            /* 🌸 核心修改：使用高清日本樱花电车街道背景，完全无遮罩，色彩极其鲜艳 */
+            background: url('https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?q=80&w=1920') no-repeat center center;
+            background-size: cover;
             background-attachment: fixed;
-            color: #4a384f;
+            color: #1e293b; /* 提高文字对比度 */
             min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 游戏大厅布局 */
+        .main-lobby {
+            max-width: 1300px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* 左侧功能区，右侧留给巨型立绘 */
+            gap: 40px;
+            padding: 60px 40px;
+            position: relative;
+        }
+
+        /* ================= 左侧：明亮高透玻璃拟态卡片 ================= */
+        .left-panel {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+            gap: 25px;
+            z-index: 2;
         }
 
-        /* 玻璃拟态主卡片容器 */
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px rgba(244, 143, 177, 0.2);
-            padding: 40px;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
+        /* 强化了高透玻璃效果，能清晰看到背后的樱花风景 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .container:hover {
-            box-shadow: 0 12px 40px rgba(244, 143, 177, 0.4);
-            border-color: rgba(255, 182, 193, 0.8);
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: #00d2ff;
+            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* 头部个人信息 */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
+        /* 玩家 ID 区域 */
+        .player-info h1 {
+            font-size: 2.4rem;
+            color: #0f172a;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 800;
         }
 
-        /* 虚拟头像 */
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 4px 15px rgba(244, 143, 177, 0.4);
-            background: #ffb6c1; /* 默认粉色，之后你可以换成你喜欢的动漫头像链接 */
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            transition: transform 0.5s ease;
-            cursor: pointer;
-        }
-        
-        .avatar:hover {
-            transform: rotate(360deg) scale(1.1);
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            color: #ff6584;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        .uid {
+            font-family: monospace;
+            color: #475569;
+            font-size: 0.95rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
             margin-bottom: 8px;
         }
 
-        .motto {
-            font-style: italic;
-            font-size: 0.95rem;
-            color: #7d6680;
+        /* 科技感/游戏感属性条 */
+        .status-section h3 {
+            font-size: 1.1rem;
+            color: #0f172a;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
         }
 
-        /* 二次元角色属性面板 */
-        .status-panel {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 35px;
+        .status-row {
+            margin-bottom: 15px;
         }
 
-        .status-title {
-            font-weight: bold;
-            color: #ff6584;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-bar {
-            margin-bottom: 12px;
-        }
-
-        .bar-label {
+        .status-meta {
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
-            margin-bottom: 4px;
+            color: #334155;
+            margin-bottom: 6px;
             font-weight: bold;
         }
 
-        .bar-bg {
-            background: rgba(0, 0, 0, 0.05);
+        .progress-track {
+            background: rgba(0, 0, 0, 0.06);
             height: 10px;
             border-radius: 5px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        .bar-fill {
+        .progress-fill {
             height: 100%;
             border-radius: 5px;
-            transition: width 1s ease-in-out;
         }
+        /* 采用更明亮鲜艳的能量条颜色 */
+        .fill-hp { background: linear-gradient(90deg, #ff4e50, #f9d423); width: 85%; }
+        .fill-mp { background: linear-gradient(90deg, #00c6ff, #0072ff); width: 90%; }
+        .fill-exp { background: linear-gradient(90deg, #11998e, #38ef7d); width: 75%; }
 
-        .hp { background: #ff6584; width: 85%; }
-        .mp { background: #b388ff; width: 90%; }
-        .exp { background: #ffd54f; width: 65%; }
-
-        /* 项目成就区域 */
-        h2.section-title {
-            color: #ff6584;
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            border-left: 5px solid #ff6584;
+        /* 项目武器库 */
+        .section-title {
+            font-size: 1.25rem;
+            color: #0f172a;
+            margin-bottom: 18px;
+            border-left: 5px solid #0072ff;
             padding-left: 10px;
+            font-weight: 700;
         }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        .weapon-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .weapon-card {
+            display: flex;
+            align-items: center;
             gap: 20px;
-        }
-
-        .project-card {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
-            padding: 20px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            padding: 18px 20px;
             text-decoration: none;
             color: inherit;
+            transition: all 0.25s ease;
         }
 
-        .project-card:hover {
-            transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #ffb6c1;
-            box-shadow: 0 10px 20px rgba(244, 143, 177, 0.15);
+        .weapon-card:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: #0072ff;
+            transform: translateX(8px);
         }
 
-        .project-icon {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+        .weapon-rarity {
+            font-size: 1.4rem;
+            color: #ff9800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .project-card h3 {
+        .weapon-detail h4 {
             font-size: 1.1rem;
-            color: #4a384f;
-            margin-bottom: 6px;
+            color: #0f172a;
+            margin-bottom: 4px;
+            font-weight: 700;
         }
 
-        .project-card p {
-            font-size: 0.85rem;
-            color: #7d6680;
+        .weapon-detail p {
+            font-size: 0.9rem;
+            color: #475569;
             line-height: 1.4;
         }
 
-        /* 页脚 */
-        footer {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #9c82a0;
-            margin-top: auto;
+        /* ================= 右侧：大角色立绘区域 ================= */
+        .right-panel {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .character-container {
+            position: fixed;
+            bottom: -20px; /* 让立绘从底部自然延伸上来 */
+            right: 8%;
+            height: 90vh; /* 极具视觉冲击力的大立绘高度 */
+            width: auto;
+            z-index: 1;
+            pointer-events: none;
+            /* 游戏看板娘特有的丝滑呼吸动画 */
+            animation: characterFloat 4s ease-in-out infinite;
+        }
+
+        .character-img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+            /* 🌸 核心修改：直接为你接上高清透明背景的初音未来（Miku V4X）官方标准立绘！ */
+            content: url('https://vocaloid.com.cn/wp-content/uploads/2024/04/miku_v4x_main.png');
+            filter: drop-shadow(5px 15px 25px rgba(0, 0, 0, 0.25));
+        }
+
+        @keyframes characterFloat {
+            0%, 100% { transform: translateY(0) cubic-bezier(0.45, 0, 0.55, 1); }
+            50% { transform: translateY(-12px) cubic-bezier(0.45, 0, 0.55, 1); }
+        }
+
+        /* 手机端适配 */
+        @media (max-width: 950px) {
+            .main-lobby { grid-template-columns: 1fr; padding: 20px; }
+            .character-container {
+                position: absolute;
+                right: -30px;
+                bottom: 0;
+                opacity: 0.3; /* 屏幕太小时半透明化，防止挡住左边文字 */
+                height: 55vh;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- 头部看板 -->
-        <div class="header">
-            <!-- 鼠标悬停在头像上会转圈哦 -->
-            <div class="avatar">🐱</div> 
-            <h1>Crpeer's Secret Base</h1>
-            <p class="motto">「兴趣使然的日常，以及未完待续的冒险 ✨」</p >
-        </div>
-
-        <!-- 角色属性面板（超有ACG代入感） -->
-        <div class="status-panel">
-            <div class="status-title">📊 冒险者状态面板</div>
+    <div class="main-lobby">
+        
+        <!-- 左侧：高透战术控制面板 -->
+        <div class="left-panel">
             
-            <div class="status-bar">
-                <div class="bar-label"><span>HP (头发浓密度)</span><span>85/100</span></div>
-                <div class="bar-bg"><div class="bar-fill hp"></div></div>
-            </div>
-            
-            <div class="status-bar">
-                <div class="bar-label"><span>MP (写代码的干劲)</span><span>90/100</span></div>
-                <div class="bar-bg"><div class="bar-fill mp"></div></div>
+            <!-- 用户核心数据 -->
+            <div class="glass-card player-info">
+                <div class="uid">UID: 0020091123</div>
+                <h1>Crpeer</h1>
+                <p style="color: #334155; font-size: 1rem; font-weight: 500;">「 欢迎回到主控端，当前区域天气：樱花季 🌸 」</p >
             </div>
 
-            <div class="status-bar">
-                <div class="bar-label"><span>EXP (前行进度条)</span><span>65%</span></div>
-                <div class="bar-bg"><div class="bar-fill exp"></div></div>
+            <!-- 状态面板 -->
+            <div class="glass-card status-section">
+                <h3>📊 SYSTEM STATUS // 系统参数</h3>
+                
+                <div class="status-row">
+                    <div class="status-meta"><span>HP (生存状态)</span><span>85%</span></div>
+                    <div class="progress-track"><div class="progress-fill fill-hp"></div></div>
+                </div>
+
+                <div class="status-row">
+                    <div class="status-meta"><span>MP (核心算力)</span><span>90%</span></div>
+                    <div class="progress-track"><div class="progress-fill fill-mp"></div></div>
+                </div>
+
+                <div class="status-row">
+                    <div class="status-meta"><span>EXP (经验模块)</span><span>75%</span></div>
+                    <div class="progress-track"><div class="progress-fill fill-exp"></div></div>
+                </div>
+            </div>
+
+            <!-- 装备/项目清单 -->
+            <div class="glass-card">
+                <h2 class="section-title">📦 WORKSPACE // 研发中装备</h2>
+                <div class="weapon-grid">
+                    
+                    <a href=" " class="weapon-card" target="_blank">
+                        <div class="weapon-rarity">⭐⭐⭐⭐⭐</div>
+                        <div class="weapon-detail">
+                            <h4>guess-the-word</h4>
+                            <p>基于 Python 部署的独立解谜文本矩阵。模块常驻运行中。</p >
+                        </div>
+                    </a >
+
+                    <a href="#" class="weapon-card">
+                        <div class="weapon-rarity">⭐⭐⭐⭐⭐</div>
+                        <div class="weapon-detail">
+                            <h4>own_chatgpt_website</h4>
+                            <p>高阶 AI 贤者核心思维网络。用于接入虚空知识库的自主终端。</p >
+                        </div>
+                    </a >
+
+                    <a href="#" class="weapon-card">
+                        <div class="weapon-rarity">⭐⭐⭐⭐</div>
+                        <div class="weapon-detail">
+                            <h4>National Competition Works</h4>
+                            <p>国赛预备役核心项目，战术外壳正在根据最新协议进行深度重构。</p >
+                        </div>
+                    </a >
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 右侧：超大看板娘立绘区 -->
+        <div class="right-panel">
+            <div class="character-container">
+                <!-- 这里的图片已经在 CSS 的 content 属性中直接绑定了高清透明的初音未来官方立绘 -->
+                < img class="character-img" alt="看板娘">
             </div>
         </div>
 
-        <!-- 装备与成就（你的项目列表） -->
-        <h2 class="section-title">🔮 正在研发的魔法道具</h2>
-        <div class="project-grid">
-            
-            <!-- 项目 1 -->
-            <a href=" " class="project-card" target="_blank">
-                <div class="project-icon">🎮</div>
-                <h3>guess-the-word</h3>
-                <p>一个用 Python 编写的趣味猜单词小游戏。用最纯粹的代码，构建属于勇者的文字解谜冒险！</p >
-            </a >
-
-            <!-- 项目 2 -->
-            <a href="#" class="project-card">
-                <div class="project-icon">🤖</div>
-                <h3>own_chatgpt_website</h3>
-                <p>专属的 AI 智能对话网站。连接未来科技的纽带，召唤强大的 AI 贤者为你解答世间一切谜题。</p >
-            </a >
-
-            <!-- 项目 3 -->
-            <a href="#" class="project-card">
-                <div class="project-icon">🏆</div>
-                <h3>National Competition Works</h3>
-                <p>正在精心筹备和打磨的全国比赛作品。蕴含着全神贯注的力量，向着最高的荣誉进发！</p >
-            </a >
-
-        </div>
     </div>
-
-    <footer>
-        <p>© 2026 Crpeer. Powered by Magic & GitHub Pages.</p >
-    </footer>
 
 </body>
 </html>
