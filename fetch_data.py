@@ -6,6 +6,7 @@ import hashlib
 import requests
 import json
 
+# 绑定你的UID和服务器
 UID = "257999016"
 SERVER = "cn_gf01"
 
@@ -40,32 +41,33 @@ def fetch_data():
         res_note = requests.get(note_url, headers=headers).json()
 
         if res_index.get("retcode") != 0 or res_note.get("retcode") != 0:
-            print("【抓取失败】请检查Cookie或米游社开关。")
-            print("错误信息:", res_index, res_note)
+            print("【抓取失败】请检查Cookie或米游社公开开关。")
             return
 
         idx = res_index["data"]["stats"]
         note = res_note["data"]
 
+        # 计算派遣完成的数量
+        expeditions_list = note.get("expeditions", [])
+        finished_exp = sum(1 for e in expeditions_list if e.get("status") == "Finished")
+        max_exp = note.get("max_expedition_num", 5)
+
+        # ✨ 核心修正：这里和你的 script.js 要求的字段完全合体！
         result = {
-            "active_day_number": idx.get("active_day_number"),
-            "achievement_number": idx.get("achievement_number"),
-            "avatar_number": idx.get("avatar_number"),
-            "spiral_abyss": idx.get("spiral_abyss"),
-            "current_resin": note.get("current_resin"),
-            "max_resin": note.get("max_resin"),
-            "current_home_coin": note.get("current_home_coin"),
-            "max_home_coin": note.get("max_home_coin"),
-            "remain_task_num": 4 - note.get("finished_task_num", 0),
-            "current_expedition_num": len([e for e in note.get("expeditions", []) if e.get("status") == "Ongoing"]),
-            "max_expedition_num": note.get("max_expedition_num"),
+            "days": idx.get("active_day_number"),
+            "abyss": idx.get("spiral_abyss"),
+            "achievements": idx.get("achievement_number"),
+            "characters": idx.get("avatar_number"),
             "resin": note.get("current_resin"),
-            "home_coin": note.get("current_home_coin")
+            "max_resin": note.get("max_resin"),
+            "coin": note.get("current_home_coin"),
+            "task": 4 - note.get("finished_task_num", 0),
+            "expeditions": f"{finished_exp}/{max_exp}"  # 格式化输出如 "3/5"
         }
 
         with open("data.json", "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
-        print("【成功】data.json 已生成！")
+        print("【成功】data.json 已按前端格式刷新！")
 
     except Exception as e:
         print(f"运行出错: {e}")
