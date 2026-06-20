@@ -1,0 +1,17 @@
+{
+  "stats": {
+    "active_day_number": 738,
+    "achievement_number": 782,
+    "avatar_number": 72,
+    "spiral_abyss": "10-3"
+  },
+  "daily_note": {
+    "current_resin": 120,
+    "max_resin": 200,
+    "current_home_coin": 2400,
+    "max_home_coin": 2400,
+    "remain_task_num": 4,
+    "current_expedition_num": 5,
+    "max_expedition_num": 5
+  }
+}
