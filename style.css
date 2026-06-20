@@ -1,10 +1,10 @@
 /* --- 🎨 基础与流式布局 --- */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
-body { background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%); background-attachment: fixed; color: #334155; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+body { background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%); background-attachment: fixed; color: #334155; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
 .main-dashboard { max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1.3fr 1fr; gap: 35px; }
 
 /* --- 🧱 通用卡片组件 --- */
-.rich-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); border: 1px solid rgba(255, 255, 255, 0.6); transition: all 0.3s ease; }
+.rich-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); transition: all 0.3s ease; }
 .rich-card:hover { background: rgba(255, 255, 255, 0.92); box-shadow: 0 15px 35px rgba(2, 132, 199, 0.15); transform: translateY(-3px); }
 .left-stream { display: flex; flex-direction: column; gap: 25px; }
 
@@ -19,14 +19,14 @@ body { background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%
 
 /* --- 🕹️ 游戏看板入口 --- */
 .game-cards-entrance { position: absolute; top: 25px; right: 25px; display: flex; gap: 15px; z-index: 10; }
-.circle-badge { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: 2px solid white; box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15); }
+.circle-badge { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: 2px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s ease; }
 .badge-ak { background: linear-gradient(135deg, #1e293b, #475569); }
 .badge-gs { background: linear-gradient(135deg, #bae6fd, #0ea5e9); }
 .circle-badge:hover { transform: scale(1.18); }
 
 /* --- 🔗 导航与资讯 --- */
 .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-.nav-button { display: flex; align-items: center; justify-content: center; padding: 15px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 12px; text-decoration: none; color: #475569; font-weight: 600; font-size: 0.95rem; transition: all 0.2s ease; }
+.nav-button { display: flex; align-items: center; justify-content: center; padding: 15px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 12px; text-decoration: none; color: #1e293b; font-weight: 600; transition: all 0.2s ease; }
 .nav-button:hover { background: #0ea5e9; color: #ffffff; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 20px; }
 .panel-title { font-size: 1.25rem; font-weight: 700; color: #1e293b; }
@@ -44,16 +44,73 @@ body { background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%
 .artwork-window img { width: 100%; height: 100%; object-fit: cover; }
 .frame-footer { margin-top: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.95rem; }
 
-/* --- 👑 米游社原生质感模态框 --- */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
-.modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-card { background: #f4f6ed; border-radius: 20px; max-width: 460px; width: 92%; box-shadow: 0 20px 40px rgba(0,0,0,0.15); transform: scale(0.9); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15); position: relative; overflow: hidden; border: 1px solid #e4e2d6; }
-.modal-overlay.active .modal-card { transform: scale(1); }
-.close-btn { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.05); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; color: #7f7c6d; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; z-index: 10; user-select: none; }
+/* --- 👑 米游社原生质感模态框 【关键修复】--- */
+.modal-overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(15, 23, 42, 0.4); 
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px); 
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay[style*="flex"] {
+    display: flex !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card { 
+    background: #f4f6ed; 
+    border-radius: 20px; 
+    max-width: 460px; 
+    width: 92%; 
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 10000;
+}
+
+.modal-overlay[style*="flex"] .modal-card {
+    transform: scale(1);
+}
+
+.close-btn { 
+    position: absolute; 
+    top: 12px; 
+    right: 12px; 
+    background: rgba(0,0,0,0.05); 
+    border: none; 
+    width: 28px; 
+    height: 28px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    color: #7f7c6d; 
+    font-size: 1.1rem;
+    z-index: 10001;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(0,0,0,0.1);
+    color: #3b3a32;
+}
 
 /* 米游社名片内部样式 */
-.hoyo-header { background: linear-gradient(135deg, #4a596b, #2a3442); color: #fff; padding: 20px; display: flex; align-items: center; gap: 15px; position: relative; }
-.hoyo-avatar-box { width: 64px; height: 64px; border-radius: 50%; border: 2px solid #fff; overflow: hidden; }
+.hoyo-header { background: linear-gradient(135deg, #4a596b, #2a3442); color: #fff; padding: 20px; display: flex; align-items: center; gap: 15px; position: relative; border-radius: 20px 20px 0 0; }
+.hoyo-avatar-box { width: 64px; height: 64px; border-radius: 50%; border: 2px solid #fff; overflow: hidden; flex-shrink: 0; }
 .hoyo-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
 .hoyo-player-name { font-size: 1.2rem; font-weight: bold; }
 .hoyo-player-lvl { font-size: 0.75rem; background: #e0bc5c; color: #322505; padding: 1px 6px; border-radius: 4px; font-weight: bold; margin-left: 6px; }
@@ -61,13 +118,13 @@ body { background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%
 .hoyo-star-badge { position: absolute; right: 15px; top: 20px; background: #607287; font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; font-weight: bold; color: #ffd875; }
 .hoyo-body { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
 .hoyo-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.hoyo-stat-card { background: #fff; border-radius: 10px; padding: 12px; border: 1px solid #e1dfd0; display: flex; flex-direction: column; align-items: center; }
+.hoyo-stat-card { background: #fff; border-radius: 10px; padding: 12px; border: 1px solid #e1dfd0; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .hoyo-stat-val { font-size: 1.3rem; font-weight: bold; color: #3b392e; }
 .hoyo-stat-lbl { font-size: 0.75rem; color: #929080; margin-top: 2px; }
-.hoyo-sec-title { font-size: 0.85rem; font-weight: bold; color: #7f7c6d; padding-left: 4px; border-left: 3px solid #dbb657; line-height: 1; }
+.hoyo-sec-title { font-size: 0.85rem; font-weight: bold; color: #7f7c6d; padding-left: 4px; border-left: 3px solid #dbb657; line-height: 1; margin-top: 10px; }
 .hoyo-char-showcase { background: #fdfcf7; border-radius: 12px; border: 1px solid #e4e2d6; padding: 12px; }
 .hoyo-char-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; color: #3b392e; }
-.hoyo-weapon-bar { background: #f0ebd9; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.85rem; font-weight: 600; color: #4e4a3a; }
+.hoyo-weapon-bar { background: #f0ebd9; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.85rem; font-weight: 500; color: #3b392e; }
 .hoyo-artifacts-row { display: flex; gap: 6px; justify-content: space-between; }
 .hoyo-art-slot { background: #fff; border: 1px solid #e4e2d6; border-radius: 6px; flex: 1; text-align: center; padding: 4px 0; font-size: 0.75rem; font-weight: bold; color: #b08a35; }
 .hoyo-notes-box { background: #fff; border-radius: 12px; border: 1px solid #e1dfd0; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -75,4 +132,8 @@ body { background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%
 .hoyo-note-line:last-child { border: none; padding: 0; }
 .hoyo-note-line strong { color: #2b2920; }
 
-@media (max-width: 900px) { .main-dashboard { grid-template-columns: 1fr; } .artwork-window { height: 380px; } .nav-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { 
+    .main-dashboard { grid-template-columns: 1fr; } 
+    .artwork-window { height: 380px; } 
+    .nav-grid { grid-template-columns: 1fr; } 
+}
