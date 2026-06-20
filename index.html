@@ -4,373 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crpeer 的个人主页 ✨</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            /* ✨ 特效 1：背景图路径变更为 images/，并加入 1.5s 柔和渐现动画 */
-            background: url('images/background.jpg') no-repeat center center / cover, 
-                        linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%);
-            background-attachment: fixed;
-            color: #334155;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-            position: relative;
-            animation: fadeInBody 1.5s ease-out;
-        }
-
-        @keyframes fadeInBody {
-            from { opacity: 0; filter: blur(5px); }
-            to { opacity: 1; filter: blur(0); }
-        }
-
-        .main-dashboard {
-            max-width: 1200px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.3fr 1fr;
-            gap: 35px;
-            position: relative;
-        }
-
-        /* 磨砂玻璃卡片基底 */
-        .rich-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .rich-card:hover {
-            background: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.15);
-            border-color: rgba(2, 132, 199, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .left-stream {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .profile-box {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-        }
-
-        /* ✨ 特效 2：头像呼吸灯光效 */
-        .profile-avatar {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
-            animation: avatarPulse 2s infinite;
-        }
-
-        @keyframes avatarPulse {
-            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
-        }
-
-        .profile-text h1 {
-            font-size: 2.2rem;
-            color: #0284c7;
-            font-weight: 800;
-        }
-
-        .badge-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .custom-badge {
-            font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        .badge-blue { background: #e0f2fe; color: #0369a1; }
-        .badge-green { background: #dcfce7; color: #15803d; }
-
-        /* 右上角悬浮徽章 */
-        .game-cards-entrance {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            display: flex;
-            gap: 15px;
-            z-index: 10;
-        }
-
-        .circle-badge {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
-            border: 2px solid white;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .badge-ak { background: linear-gradient(135deg, #1e293b, #475569); }
-        .badge-gs { background: linear-gradient(135deg, #bae6fd, #0ea5e9); }
-
-        .circle-badge:hover {
-            transform: scale(1.2) rotate(12deg); /* 悬浮时放大并稍微倾斜，极具动感 */
-        }
-
-        .circle-badge .preview-tip {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            background: #0f172a;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-weight: bold;
-        }
-        .circle-badge .preview-tip::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-            width: 8px;
-            height: 8px;
-            background: #0f172a;
-        }
-        .circle-badge:hover .preview-tip {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* 导航按钮 */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .nav-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            text-decoration: none;
-            color: #475569;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-
-        .nav-button:hover {
-            background: #0ea5e9;
-            color: #ffffff;
-            border-color: #0ea5e9;
-        }
-
-        /* 资讯板块 */
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .panel-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .live-indicator {
-            font-size: 0.75rem;
-            background: #0ea5e9;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .news-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 320px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        .news-container::-webkit-scrollbar { width: 4px; }
-        .news-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-        .news-item-link { text-decoration: none; color: inherit; }
-        
-        .news-card-real {
-            background: rgba(255, 255, 255, 0.5);
-            border-left: 4px solid #0ea5e9;
-            padding: 15px;
-            border-radius: 0 12px 12px 0;
-            transition: all 0.2s ease;
-        }
-        .news-card-real:hover {
-            background: #ffffff;
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .news-date { font-size: 0.75rem; color: #64748b; margin-bottom: 4px; font-weight: 600; }
-        .news-title { font-size: 0.95rem; color: #1e293b; line-height: 1.4; font-weight: 500; }
-
-        /* 右侧看板 */
-        .right-showcase {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .premium-frame {
-            background: #ffffff;
-            padding: 18px;
-            border-radius: 24px;
-            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
-            width: 100%;
-            border: 1px solid rgba(255,255,255,0.8);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* ✨ 特效 3：卡片扫光效果 */
-        .premium-frame::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -60%; width: 30%; height: 200%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-            transform: rotate(25deg);
-            animation: sheetShine 4s infinite ease-in-out;
-        }
-
-        @keyframes sheetShine {
-            0% { left: -60%; }
-            15% { left: 130%; }
-            100% { left: 130%; }
-        }
-
-        /* ✨ 特效 4：图片高级缩放、提亮、微转视觉复合特效 */
-        .artwork-window {
-            width: 100%;
-            height: 520px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%);
-            position: relative;
-        }
-
-        .artwork-window img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* 预设略微暗淡，给 hover 留出提亮空间 */
-            filter: brightness(0.92) contrast(1.02);
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* 当悬浮在整个右侧卡片上时，图片执行超平滑复合动效 */
-        .premium-frame:hover .artwork-window img {
-            transform: scale(1.06) rotate(1deg); /* 缓动放大 6% 并极其轻微旋转 */
-            filter: brightness(1.08) contrast(1.05); /* 瞬间提亮色彩 */
-        }
-
-        .frame-footer {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 5px;
-        }
-
-        .frame-title {
-            font-weight: 700;
-            color: #1e293b;
-            font-size: 0.95rem;
-        }
-
-        /* 弹窗组件 */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-card { background: white; padding: 35px; border-radius: 24px; max-width: 500px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: scale(0.9); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
-        .modal-overlay.active .modal-card { transform: scale(1); }
-        .modal-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
-        .modal-icon { font-size: 2.5rem; }
-        .modal-title h3 { font-size: 1.4rem; color: #1e293b; }
-        .modal-body p { font-size: 1rem; color: #475569; margin-bottom: 14px; display: flex; justify-content: space-between; border-bottom: 1px dashed #f1f5f9; padding-bottom: 6px; }
-        .modal-body strong { color: #0f172a; }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; color: #64748b; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
-
-        @media (max-width: 900px) {
-            .main-dashboard { grid-template-columns: 1fr; }
-            .artwork-window { height: 380px; }
-            .nav-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="main-dashboard">
-        
         <div class="left-stream">
-            
             <div class="rich-card profile-box">
                 <div class="profile-avatar">✨</div>
                 <div class="profile-text">
@@ -380,16 +19,9 @@
                         <span class="custom-badge badge-green">🎮 ACG Lover</span>
                     </div>
                 </div>
-
                 <div class="game-cards-entrance">
-                    <div class="circle-badge badge-ak" onclick="openGameModal('ak')">
-                        🦅
-                        <div class="preview-tip">📬 明日方舟 // 博士档案</div>
-                    </div>
-                    <div class="circle-badge badge-gs" onclick="openGameModal('gs')">
-                        👑
-                        <div class="preview-tip">🧭 原神 // 旅行者档案</div>
-                    </div>
+                    <div class="circle-badge badge-ak" onclick="openModal('ak')">🦅</div>
+                    <div class="circle-badge badge-gs" onclick="openModal('gs')">👑</div>
                 </div>
             </div>
 
@@ -402,112 +34,75 @@
             <div class="rich-card">
                 <div class="panel-header">
                     <div class="panel-title">📢 实时资讯 // 游戏情报大厅</div>
-                    <span class="live-indicator" id="sync-status">正在连线...</span>
+                    <span class="live-indicator" id="sync-status">云端连线中</span>
                 </div>
-                
                 <div class="news-container" id="news-box">
-                    <div class="news-card-real">
-                        <div class="news-title">正在调取云端数据流，请稍候...</div>
-                    </div>
+                    <div class="news-card-real"><div class="news-title">正在调取动态资讯数据流...</div></div>
                 </div>
             </div>
-
         </div>
 
         <div class="right-showcase">
             <div class="premium-frame">
                 <div class="artwork-window">
-                    <img src="images/character.jpg" alt="看板娘" onerror="this.style.display='none'">
+                    <img src="character.jpg" alt="看板娘" onerror="this.src='https://i0.hdslb.com/bfs/article/767bc47900898be2bc820f188331e0cb6d45e43a.jpg'">
                 </div>
                 <div class="frame-footer">
-                    <div class="frame-title">🖼️ 看板插画展示</div>
-                    <div style="font-size:0.8rem; color:#94a3b8;">IMAGES FOLDER</div>
+                    <div>🖼️ 看板插画展示</div>
+                    <div style="font-size:0.8rem; color:#94a3b8;">STATIC HOST</div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <div class="modal-overlay" id="global-modal" onclick="closeGameModal()">
+    <div class="modal-overlay" id="global-modal" onclick="closeModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeGameModal()">×</button>
-            <div id="modal-content-inject"></div>
+            <button class="close-btn" onclick="closeModal()">×</button>
+            
+            <div id="view-gs" style="display: none;">
+                <div class="hoyo-header">
+                    <div class="hoyo-avatar-box">
+                        <img src="character.jpg" onerror="this.src='https://i0.hdslb.com/bfs/article/767bc47900898be2bc820f188331e0cb6d45e43a.jpg'">
+                    </div>
+                    <div>
+                        <div class="hoyo-player-name">偏<span class="hoyo-player-lvl">Lv.58</span></div>
+                        <div class="hoyo-uid">天空岛 | UID 257999016</div>
+                    </div>
+                    <div class="hoyo-star-badge">🌟 归忆星旅</div>
+                </div>
+                <div class="hoyo-body">
+                    <div class="hoyo-stats-grid">
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-days">--</span><span class="hoyo-stat-lbl">活跃天数</span></div>
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-abyss">--</span><span class="hoyo-stat-lbl">深境螺旋</span></div>
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-achieve">--</span><span class="hoyo-stat-lbl">成就达成数</span></div>
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-chars">--</span><span class="hoyo-stat-lbl">获得角色数</span></div>
+                    </div>
+                    <div class="hoyo-sec-title">我的角色</div>
+                    <div class="hoyo-char-showcase">
+                        <div class="hoyo-char-header"><span>哥伦比娅 (❄️ 冰)</span><span style="color:#b08a35;">Lv.90</span></div>
+                        <div class="hoyo-weapon-bar"><span>🎻 帷间夜曲</span><span style="color: #8e8975;">Lv.90</span></div>
+                        <div class="hoyo-artifacts-row">
+                            <div class="hoyo-art-slot">+17</div><div class="hoyo-art-slot">+20</div><div class="hoyo-art-slot">+20</div><div class="hoyo-art-slot">+20</div><div class="hoyo-art-slot">+20</div>
+                        </div>
+                    </div>
+                    <div class="hoyo-sec-title">实时便笺 (🕒 云端每小时自动同步)</div>
+                    <div class="hoyo-notes-box">
+                        <div class="hoyo-note-line"><span>🌙 原粹树脂</span><strong id="gs-resin">-- / 200</strong></div>
+                        <div class="hoyo-note-line"><span>🪙 洞天财瓮</span><strong><span id="gs-coin">--</span> / 2400</strong></div>
+                        <div class="hoyo-note-line"><span>📜 每日委托剩余</span><strong id="gs-task">--</strong></div>
+                        <div class="hoyo-note-line"><span>🧭 探索派遣完成</span><strong id="gs-expedition">--</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-ak" style="display: none; padding: 30px; background: #1e293b; color: #fff;">
+                <h3>🦅 罗德岛战术履历</h3>
+                <p style="margin-top: 15px; color: #cbd5e1;">战略代号: Dr. Crpeer</p>
+                <p style="margin-top: 5px; color: #94a3b8; font-size: 0.85rem;">云端数据链路上线完毕。</p>
+            </div>
         </div>
     </div>
 
-    <script>
-        // 游戏名片配置不变
-        const gameData = {
-            ak: `
-                <div class="modal-header"><div class="modal-icon">🦅</div><div class="modal-title"><h3>罗德岛战术履历</h3><span style="font-size:0.8rem; color:#f43f5e; font-weight:bold;">ARKNIGHTS DOSSIER</span></div></div>
-                <div class="modal-body">
-                    <p><span>战略代号:</span> <strong>Dr. Crpeer</strong></p>
-                    <p><span>终端UID:</span> <strong>12345678</strong></p>
-                    <p><span>指挥官等级:</span> <strong>Lv.120</strong></p>
-                    <p><span>核心助战:</span> <strong>阿米娅 (升变)</strong></p>
-                </div>
-            `,
-            gs: `
-                <div class="modal-header"><div class="modal-icon">✨</div><div class="modal-title"><h3>提瓦特旅行者凭证</h3><span style="font-size:0.8rem; color:#0ea5e9; font-weight:bold;">TEYVAT ACCREDITATION</span></div></div>
-                <div class="modal-body">
-                    <p><span>旅行者昵称:</span> <strong>Crpeer</strong></p>
-                    <p><span>冒险凭证UID:</span> <strong>100000001</strong></p>
-                    <p><span>冒险等阶:</span> <strong>Lv.60</strong></p>
-                    <p><span>深境螺旋:</span> <strong style="color:#eab308;">🌟 36 星</strong></p>
-                </div>
-            `
-        };
-
-        function openGameModal(type) {
-            const modal = document.getElementById('global-modal');
-            const container = document.getElementById('modal-content-inject');
-            if (gameData[type]) { container.innerHTML = gameData[type]; modal.classList.add('active'); }
-        }
-        function closeGameModal() { document.getElementById('global-modal').classList.remove('active'); }
-
-        // 🟢 调用稳定的硬核游戏源（无跨域限制）
-        async function getRealGamingNews() {
-            const newsBox = document.getElementById('news-box');
-            const statusLabel = document.getElementById('sync-status');
-
-            const rssUrl = encodeURIComponent('https://www.gcores.com/rss');
-            const targetApi = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
-
-            try {
-                const response = await fetch(targetApi);
-                if (!response.ok) throw new Error();
-                const data = await response.json();
-
-                if (data.status === 'ok' && data.items.length > 0) {
-                    let html = '';
-                    data.items.slice(0, 5).forEach(item => {
-                        html += `
-                            <a href="${item.link}" target="_blank" class="news-item-link">
-                                <div class="news-card-real">
-                                    <div class="news-date">📅 发布时间：${item.pubDate.split(' ')[0]}</div>
-                                    <div class="news-title">${item.title}</div>
-                                </div>
-                            </a>
-                        `;
-                    });
-                    newsBox.innerHTML = html;
-                    statusLabel.innerText = "● 已连接云端资讯";
-                    statusLabel.style.backgroundColor = "#10b981";
-                } else {
-                    throw new Error();
-                }
-            } catch (e) {
-                newsBox.innerHTML = `
-                    <div class="news-card-real" style="border-left-color: #ef4444;">
-                        <div class="news-title" style="color: #ef4444;">⚠️ 无法同步最新的在线简讯，请检查网络连接或稍后刷新重试。</div>
-                    </div>
-                `;
-                statusLabel.innerText = "● 连接失败";
-                statusLabel.style.backgroundColor = "#ef4444";
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', getRealGamingNews);
-    </script>
+    <script src="script.js" defer></script>
 </body>
 </html>
