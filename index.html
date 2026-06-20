@@ -3,174 +3,511 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的游戏资讯看板</title>
+    <title>Crpeer 的个人主页 ✨</title>
     <style>
-        :root {
-            --bilibili-pink: #fb7299;
-            --bilibili-blue: #00aeec;
-            --bg-color: #f4f5f7;
-            --card-bg: #ffffff;
-            --text-color: #212121;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
+            /* ✨ 特效 1：背景图路径变更为 images/，并加入 1.5s 柔和渐现动画 */
+            background: url('images/background.jpg') no-repeat center center / cover, 
+                        linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%);
+            background-attachment: fixed;
+            color: #334155;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            animation: fadeInBody 1.5s ease-out;
         }
 
-        .container {
+        @keyframes fadeInBody {
+            from { opacity: 0; filter: blur(5px); }
+            to { opacity: 1; filter: blur(0); }
+        }
+
+        .main-dashboard {
+            max-width: 1200px;
             width: 100%;
-            max-width: 600px;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 35px;
+            position: relative;
         }
 
-        header {
+        /* 磨砂玻璃卡片基底 */
+        .rich-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rich-card:hover {
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.15);
+            border-color: rgba(2, 132, 199, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .left-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        /* ✨ 特效 2：头像呼吸灯光效 */
+        .profile-avatar {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
+            animation: avatarPulse 2s infinite;
+        }
+
+        @keyframes avatarPulse {
+            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+        }
+
+        .profile-text h1 {
+            font-size: 2.2rem;
+            color: #0284c7;
+            font-weight: 800;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .custom-badge {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .badge-blue { background: #e0f2fe; color: #0369a1; }
+        .badge-green { background: #dcfce7; color: #15803d; }
+
+        /* 右上角悬浮徽章 */
+        .game-cards-entrance {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .circle-badge {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+            border: 2px solid white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .badge-ak { background: linear-gradient(135deg, #1e293b, #475569); }
+        .badge-gs { background: linear-gradient(135deg, #bae6fd, #0ea5e9); }
+
+        .circle-badge:hover {
+            transform: scale(1.2) rotate(12deg); /* 悬浮时放大并稍微倾斜，极具动感 */
+        }
+
+        .circle-badge .preview-tip {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0f172a;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        .circle-badge .preview-tip::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 8px;
+            height: 8px;
+            background: #0f172a;
+        }
+        .circle-badge:hover .preview-tip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 导航按钮 */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover {
+            background: #0ea5e9;
+            color: #ffffff;
+            border-color: #0ea5e9;
+        }
+
+        /* 资讯板块 */
+        .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
             margin-bottom: 20px;
         }
 
-        h1 {
-            font-size: 20px;
-            margin: 0;
-            color: var(--bilibili-pink);
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
         }
 
-        .status-badge {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 12px;
-            background-color: #666;
+        .live-indicator {
+            font-size: 0.75rem;
+            background: #0ea5e9;
             color: white;
-            transition: background-color 0.3s;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
         }
 
-        .news-list {
+        .news-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .news-container::-webkit-scrollbar { width: 4px; }
+        .news-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        .news-item-link { text-decoration: none; color: inherit; }
+        
+        .news-card-real {
+            background: rgba(255, 255, 255, 0.5);
+            border-left: 4px solid #0ea5e9;
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            transition: all 0.2s ease;
+        }
+        .news-card-real:hover {
+            background: #ffffff;
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .news-date { font-size: 0.75rem; color: #64748b; margin-bottom: 4px; font-weight: 600; }
+        .news-title { font-size: 0.95rem; color: #1e293b; line-height: 1.4; font-weight: 500; }
+
+        /* 右侧看板 */
+        .right-showcase {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        .news-item-link {
-            text-decoration: none;
-            color: inherit;
+        .premium-frame {
+            background: #ffffff;
+            padding: 18px;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.8);
+            overflow: hidden;
+            position: relative;
         }
 
-        .news-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border-left: 5px solid var(--bilibili-pink);
-            transition: transform 0.2s, box-shadow 0.2s;
+        /* ✨ 特效 3：卡片扫光效果 */
+        .premium-frame::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -60%; width: 30%; height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg);
+            animation: sheetShine 4s infinite ease-in-out;
         }
 
-        .news-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        @keyframes sheetShine {
+            0% { left: -60%; }
+            15% { left: 130%; }
+            100% { left: 130%; }
         }
 
-        .news-date {
-            font-size: 11px;
-            color: #999;
-            margin-bottom: 6px;
-            font-weight: bold;
-            text-transform: uppercase;
+        /* ✨ 特效 4：图片高级缩放、提亮、微转视觉复合特效 */
+        .artwork-window {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%);
+            position: relative;
         }
 
-        .news-title {
-            font-size: 15px;
-            line-height: 1.5;
-            font-weight: 500;
+        .artwork-window img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 预设略微暗淡，给 hover 留出提亮空间 */
+            filter: brightness(0.92) contrast(1.02);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .error-card {
-            border-left-color: #ef4444;
-            color: #ef4444;
+        /* 当悬浮在整个右侧卡片上时，图片执行超平滑复合动效 */
+        .premium-frame:hover .artwork-window img {
+            transform: scale(1.06) rotate(1deg); /* 缓动放大 6% 并极其轻微旋转 */
+            filter: brightness(1.08) contrast(1.05); /* 瞬间提亮色彩 */
+        }
+
+        .frame-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .frame-title {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.95rem;
+        }
+
+        /* 弹窗组件 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card { background: white; padding: 35px; border-radius: 24px; max-width: 500px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: scale(0.9); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .modal-overlay.active .modal-card { transform: scale(1); }
+        .modal-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; }
+        .modal-icon { font-size: 2.5rem; }
+        .modal-title h3 { font-size: 1.4rem; color: #1e293b; }
+        .modal-body p { font-size: 1rem; color: #475569; margin-bottom: 14px; display: flex; justify-content: space-between; border-bottom: 1px dashed #f1f5f9; padding-bottom: 6px; }
+        .modal-body strong { color: #0f172a; }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; color: #64748b; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
+
+        @media (max-width: 900px) {
+            .main-dashboard { grid-template-columns: 1fr; }
+            .artwork-window { height: 380px; }
+            .nav-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>📺 B 站动态同步测试</h1>
-        <span id="sync-status" class="status-badge">● 正在连接...</span>
-    </header>
+    <div class="main-dashboard">
+        
+        <div class="left-stream">
+            
+            <div class="rich-card profile-box">
+                <div class="profile-avatar">✨</div>
+                <div class="profile-text">
+                    <h1>Crpeer</h1>
+                    <div class="badge-group">
+                        <span class="custom-badge badge-blue">💻 Developer</span>
+                        <span class="custom-badge badge-green">🎮 ACG Lover</span>
+                    </div>
+                </div>
 
-    <div id="news-box" class="news-list">
-        <div class="news-card">
-            <div class="news-title" style="color: #999; text-align: center;">正在拼命加载 B 站动态...</div>
+                <div class="game-cards-entrance">
+                    <div class="circle-badge badge-ak" onclick="openGameModal('ak')">
+                        🦅
+                        <div class="preview-tip">📬 明日方舟 // 博士档案</div>
+                    </div>
+                    <div class="circle-badge badge-gs" onclick="openGameModal('gs')">
+                        👑
+                        <div class="preview-tip">🧭 原神 // 旅行者档案</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-grid">
+                <a href="https://github.com/crpeer" target="_blank" class="nav-button">📦 GitHub 仓库</a>
+                <a href="https://www.bilibili.com" target="_blank" class="nav-button">📺 哔哩哔哩</a>
+                <a href="https://ak.hypergryph.com" target="_blank" class="nav-button">🦅 明日方舟官网</a>
+            </div>
+
+            <div class="rich-card">
+                <div class="panel-header">
+                    <div class="panel-title">📢 实时资讯 // 游戏情报大厅</div>
+                    <span class="live-indicator" id="sync-status">正在连线...</span>
+                </div>
+                
+                <div class="news-container" id="news-box">
+                    <div class="news-card-real">
+                        <div class="news-title">正在调取云端数据流，请稍候...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right-showcase">
+            <div class="premium-frame">
+                <div class="artwork-window">
+                    <img src="images/character.jpg" alt="看板娘" onerror="this.style.display='none'">
+                </div>
+                <div class="frame-footer">
+                    <div class="frame-title">🖼️ 看板插画展示</div>
+                    <div style="font-size:0.8rem; color:#94a3b8;">IMAGES FOLDER</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="global-modal" onclick="closeGameModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeGameModal()">×</button>
+            <div id="modal-content-inject"></div>
         </div>
     </div>
-</div>
 
-<script>
-    async function getBilibiliDynamics() {
-        const newsBox = document.getElementById('news-box');
-        const statusLabel = document.getElementById('sync-status');
-
-        // 明日方舟官方B站UID：161775300 （你可以换成任何你喜欢的UP主UID）
-        const bilibiliUid = '161775300'; 
-        
-        // 使用开源的 RSSHub 节点将 B 站动态转化为标准流，再通过 rss2json 解析成网页可读的 JSON
-        const rssUrl = encodeURIComponent(`https://rsshub.app/bilibili/user/dynamic/${bilibiliUid}`);
-        const targetApi = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
-
-        try {
-            const response = await fetch(targetApi);
-            if (!response.ok) throw new Error("网络请求失败");
-            const data = await response.json();
-
-            if (data.status === 'ok' && data.items.length > 0) {
-                let html = '';
-                // 只取前 5 条动态
-                data.items.slice(0, 5).forEach(item => {
-                    // 过滤掉文字里的 HTML 标签，防止排版错乱，并截取前 70 个字
-                    const pureText = item.title.replace(/<[^>]+>/g, '').trim();
-                    const shortTitle = pureText.length > 70 ? pureText.substring(0, 70) + '...' : pureText;
-                    
-                    // 格式化一下日期
-                    const postDate = item.pubDate ? item.pubDate.split(' ')[0] : '近期';
-
-                    html += `
-                        <a href="${item.link}" target="_blank" class="news-item-link">
-                            <div class="news-card">
-                                <div class="news-date">动态发布 // ${postDate}</div>
-                                <div class="news-title">${shortTitle}</div>
-                            </div>
-                        </a>
-                    `;
-                });
-                
-                newsBox.innerHTML = html;
-                statusLabel.innerText = "● 已同步最新动态";
-                statusLabel.style.backgroundColor = "var(--bilibili-pink)";
-            } else {
-                throw new Error("未解析到有效数据");
-            }
-        } catch (e) {
-            console.error(e);
-            // 失败时的友好提示
-            newsBox.innerHTML = `
-                <div class="news-card error-card">
-                    <div class="news-title">⚠️ 连接被拦截或节点撞墙</div>
-                    <div class="news-date" style="color: #ef4444; margin-top: 5px;">原因：RSSHub 公共节点请求太频繁，暂时被 B 站风控封锁了 IP，请稍后再试。</div>
+    <script>
+        // 游戏名片配置不变
+        const gameData = {
+            ak: `
+                <div class="modal-header"><div class="modal-icon">🦅</div><div class="modal-title"><h3>罗德岛战术履历</h3><span style="font-size:0.8rem; color:#f43f5e; font-weight:bold;">ARKNIGHTS DOSSIER</span></div></div>
+                <div class="modal-body">
+                    <p><span>战略代号:</span> <strong>Dr. Crpeer</strong></p>
+                    <p><span>终端UID:</span> <strong>12345678</strong></p>
+                    <p><span>指挥官等级:</span> <strong>Lv.120</strong></p>
+                    <p><span>核心助战:</span> <strong>阿米娅 (升变)</strong></p>
                 </div>
-            `;
-            statusLabel.innerText = "● 同步失败";
-            statusLabel.style.backgroundColor = "#ef4444";
+            `,
+            gs: `
+                <div class="modal-header"><div class="modal-icon">✨</div><div class="modal-title"><h3>提瓦特旅行者凭证</h3><span style="font-size:0.8rem; color:#0ea5e9; font-weight:bold;">TEYVAT ACCREDITATION</span></div></div>
+                <div class="modal-body">
+                    <p><span>旅行者昵称:</span> <strong>Crpeer</strong></p>
+                    <p><span>冒险凭证UID:</span> <strong>100000001</strong></p>
+                    <p><span>冒险等阶:</span> <strong>Lv.60</strong></p>
+                    <p><span>深境螺旋:</span> <strong style="color:#eab308;">🌟 36 星</strong></p>
+                </div>
+            `
+        };
+
+        function openGameModal(type) {
+            const modal = document.getElementById('global-modal');
+            const container = document.getElementById('modal-content-inject');
+            if (gameData[type]) { container.innerHTML = gameData[type]; modal.classList.add('active'); }
         }
-    }
+        function closeGameModal() { document.getElementById('global-modal').classList.remove('active'); }
 
-    // 页面加载完成后自动运行
-    document.addEventListener('DOMContentLoaded', getBilibiliDynamics);
-</script>
+        // 🟢 调用稳定的硬核游戏源（无跨域限制）
+        async function getRealGamingNews() {
+            const newsBox = document.getElementById('news-box');
+            const statusLabel = document.getElementById('sync-status');
 
+            const rssUrl = encodeURIComponent('https://www.gcores.com/rss');
+            const targetApi = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
+
+            try {
+                const response = await fetch(targetApi);
+                if (!response.ok) throw new Error();
+                const data = await response.json();
+
+                if (data.status === 'ok' && data.items.length > 0) {
+                    let html = '';
+                    data.items.slice(0, 5).forEach(item => {
+                        html += `
+                            <a href="${item.link}" target="_blank" class="news-item-link">
+                                <div class="news-card-real">
+                                    <div class="news-date">📅 发布时间：${item.pubDate.split(' ')[0]}</div>
+                                    <div class="news-title">${item.title}</div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    newsBox.innerHTML = html;
+                    statusLabel.innerText = "● 已连接云端资讯";
+                    statusLabel.style.backgroundColor = "#10b981";
+                } else {
+                    throw new Error();
+                }
+            } catch (e) {
+                newsBox.innerHTML = `
+                    <div class="news-card-real" style="border-left-color: #ef4444;">
+                        <div class="news-title" style="color: #ef4444;">⚠️ 无法同步最新的在线简讯，请检查网络连接或稍后刷新重试。</div>
+                    </div>
+                `;
+                statusLabel.innerText = "● 连接失败";
+                statusLabel.style.backgroundColor = "#ef4444";
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', getRealGamingNews);
+    </script>
 </body>
 </html>
