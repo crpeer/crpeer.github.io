@@ -2,33 +2,33 @@ name: 自动刷新原神数据
 
 on:
   schedule:
-    - cron: '0 * * * *' # 定时任务：每小时自动执行一次数据同步流水线
-  workflow_dispatch: # 允许在 GitHub 控制台手动触发调度
+    - cron: '0 * * * *' # 定时调度：每小时执行一次自动化同步
+  workflow_dispatch: # 允许在 GitHub 控制台手动触发流水线
 
 permissions:
-  contents: write # 显式授予工作流对当前仓库的写权限，以防推送失败
+  contents: write # 显式声明工作流对当前仓库的写权限，防止推送失败
 
 jobs:
   execute_pipeline:
     runs-on: ubuntu-latest
     
     steps:
-    - name: 步骤 1 - 检出目标主分支代码
+    - name: 步骤 1 - 检出目标 main 主分支代码
       uses: actions/checkout@v4
       with:
-        ref: main # 显式锁定并检出 main 分支，确保工作区底座正确
+        ref: main # 显式锁定 main 主分支
 
     - name: 步骤 2 - 初始化 Python 运行时环境
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: 步骤 3 - 安装静态依赖模块
+    - name: 步骤 3 - 安装网络请求静态依赖模块
       run: pip install requests
 
-    - name: 步骤 4 - 执行网络中台数据检索脚本
+    - name: 步骤 4 - 执行中台数据抓取与序列化脚本
       env:
-        MIHOYO_COOKIE: ${{ secrets.MIHOYO_COOKIE }} # 注入托管于 GitHub Secrets 的加密安全凭证
+        MIHOYO_COOKIE: ${{ secrets.MIHOYO_COOKIE }} # 注入托管于项目的加密安全凭证
       run: python fetch_data.py
 
     - name: 步骤 5 - 持久化变更数据至远程 main 分支
@@ -36,6 +36,6 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add data.json
-        # 捕获空变更异常（若数据未发生实质性波动，commit 失败时直接退出，不中断整个流水线）
-        git commit -m "chore: 自动化更新原神动态战绩数据 [skip ci]" || exit 0
+        # 捕获空变更异常（若数据无实质变动，commit失败时不报红中断整个流水线）
+        git commit -m "chore: 自动化更新原神动态数据 [skip ci]" || exit 0
         git push origin main
