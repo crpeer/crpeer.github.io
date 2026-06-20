@@ -29,14 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
             window.genshinData = data;
             console.log("✅ 数据加载成功:", data);
             // 更新页面上的基础数据
-            document.getElementById('gs-days').innerText = data.stats.active_day_number;
-            document.getElementById('gs-abyss').innerText = data.stats.spiral_abyss;
-            document.getElementById('gs-achieve').innerText = data.stats.achievement_number;
-            document.getElementById('gs-chars').innerText = data.stats.avatar_number;
-            document.getElementById('gs-resin').innerText = data.daily_note.current_resin + ' / ' + data.daily_note.max_resin;
-            document.getElementById('gs-coin').innerText = data.daily_note.current_home_coin;
-            document.getElementById('gs-task').innerText = data.daily_note.remain_task_num;
-            document.getElementById('gs-expedition').innerText = data.daily_note.current_expedition_num + ' / ' + data.daily_note.max_expedition_num;
+            if (document.getElementById('gs-days')) {
+                document.getElementById('gs-days').innerText = data.stats.active_day_number;
+                document.getElementById('gs-abyss').innerText = data.stats.spiral_abyss;
+                document.getElementById('gs-achieve').innerText = data.stats.achievement_number;
+                document.getElementById('gs-chars').innerText = data.stats.avatar_number;
+                document.getElementById('gs-resin').innerText = data.daily_note.current_resin + ' / ' + data.daily_note.max_resin;
+                document.getElementById('gs-coin').innerText = data.daily_note.current_home_coin;
+                document.getElementById('gs-task').innerText = data.daily_note.remain_task_num;
+                document.getElementById('gs-expedition').innerText = data.daily_note.current_expedition_num + ' / ' + data.daily_note.max_expedition_num;
+            }
         })
         .catch(err => {
             console.error("❌ 基础数据加载失败", err);
@@ -45,19 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 3. 【功能三】点击头像触发详细数据
 function openModal(type) {
-    console.log("点击了按钮，type:", type);
+    console.log("🔔 点击了按钮，type:", type);
     
     const modal = document.getElementById('global-modal');
+    if (!modal) {
+        console.error("❌ 找不到 modal 元素!");
+        return;
+    }
     
     if (type === 'gs') {
-        console.log("准备显示原神数据...");
+        console.log("🎮 准备显示原神数据...");
         document.getElementById('view-gs').style.display = 'block';
         document.getElementById('view-ak').style.display = 'none';
         
         // 确保数据已加载
         if (window.genshinData) {
             const data = window.genshinData;
-            console.log("使用预加载数据:", data);
+            console.log("✅ 使用预加载数据:", data);
             document.getElementById('gs-days').innerText = data.stats.active_day_number;
             document.getElementById('gs-abyss').innerText = data.stats.spiral_abyss;
             document.getElementById('gs-achieve').innerText = data.stats.achievement_number;
@@ -67,7 +73,7 @@ function openModal(type) {
             document.getElementById('gs-task').innerText = data.daily_note.remain_task_num;
             document.getElementById('gs-expedition').innerText = data.daily_note.current_expedition_num + ' / ' + data.daily_note.max_expedition_num;
         } else {
-            console.log("数据未预加载，现在加载...");
+            console.log("⏳ 数据未预加载，现在加载...");
             fetch('data.json?t=' + new Date().getTime())
                 .then(response => response.json())
                 .then(data => {
@@ -86,17 +92,20 @@ function openModal(type) {
         }
         
     } else if (type === 'ak') {
-        console.log("准备显示明日方舟数据...");
+        console.log("🦅 准备显示明日方舟数据...");
         document.getElementById('view-ak').style.display = 'block';
         document.getElementById('view-gs').style.display = 'none';
     }
     
-    // 显示模态框
+    // 显示模态框 - 这是关键！
     modal.style.display = 'flex';
-    console.log("模态框已显示");
+    console.log("✨ 模态框已显示");
 }
 
 function closeModal() {
-    console.log("关闭模态框");
-    document.getElementById('global-modal').style.display = 'none';
+    console.log("❌ 关闭模态框");
+    const modal = document.getElementById('global-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
