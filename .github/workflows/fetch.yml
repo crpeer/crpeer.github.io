@@ -1,37 +1,27 @@
 name: 自动刷新原神数据
 on:
   schedule:
-    - cron: '0 * * * *' # 每小时自动运行一次
-  workflow_dispatch: # 允许手动点击按钮刷新
-
-# 强制赋予机器人写入仓库的权限，防止推送失败
+    - cron: '0 * * * *'
+  workflow_dispatch:
 permissions:
   contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: 检查代码
-      uses: actions/checkout@v3
-
-    - name: 初始化Python环境
-      uses: actions/setup-python@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-
-    - name: 安装依赖
-      run: pip install requests
-
-    - name: 执行数据抓取
+    - run: pip install requests
+    - name: 抓取数据
       env:
         MIHOYO_COOKIE: ${{ secrets.MIHOYO_COOKIE }}
       run: python fetch_data.py
-
-    - name: 自动把新生成的data.json推送到仓库
+    - name: 提交数据
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add data.json
-        git commit -m "🤖 自动搬运最新原神战绩" || exit 0
+        git commit -m "update data" || exit 0
         git push
