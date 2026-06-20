@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crpeer 的个人空间 ✨</title>
+    <title>Crpeer 的战术终端 ✨</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,9 @@
         }
 
         body {
-            /* 🌤️ 核心修改：用纯 CSS 代码渲染出动漫风的“日落晴空”渐变，包含朝气蓝、空气白和晚霞橙，不需要加载任何背景图，绝对不会卡死 */
-            background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%);
+            /* 🌤️ 背景图联动：优先读取你本地的 background.jpg！ */
+            background: url('./background.jpg') no-repeat center center / cover, 
+                        linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%);
             background-attachment: fixed;
             color: #334155;
             min-height: 100vh;
@@ -22,6 +23,7 @@
             justify-content: center;
             align-items: center;
             padding: 40px 20px;
+            position: relative;
         }
 
         /* 主视窗大厅 */
@@ -29,13 +31,14 @@
             max-width: 1200px;
             width: 100%;
             display: grid;
-            grid-template-columns: 1.3fr 1fr; /* 左侧信息流，右侧看板大卡片 */
+            grid-template-columns: 1.3fr 1fr;
             gap: 35px;
+            position: relative;
         }
 
-        /* 极简清爽的白瓷磨砂质感卡片 */
+        /* 磨砂玻璃卡片 */
         .rich-card {
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -52,18 +55,18 @@
             transform: translateY(-3px);
         }
 
-        /* 左侧信息流盒子 */
         .left-stream {
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
 
-        /* 1. 个人顶栏 */
+        /* 个人顶栏 */
         .profile-box {
             display: flex;
             align-items: center;
             gap: 20px;
+            position: relative;
         }
 
         .profile-avatar {
@@ -75,7 +78,6 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
         }
 
         .profile-text h1 {
@@ -99,7 +101,75 @@
         .badge-blue { background: #e0f2fe; color: #0369a1; }
         .badge-green { background: #dcfce7; color: #15803d; }
 
-        /* 2. 导航按钮组 */
+        /* ================= 🎯 核心需求二：右上角圆形悬浮名片 ================= */
+        .game-cards-entrance {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .circle-badge {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid white;
+        }
+
+        /* 方舟偏深色科技风，原神偏浅蓝星空风 */
+        .badge-ak { background: linear-gradient(135deg, #1e293b, #475569); }
+        .badge-gs { background: linear-gradient(135deg, #bae6fd, #0ea5e9); }
+
+        .circle-badge:hover {
+            transform: scale(1.18) translateY(-3px);
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3);
+        }
+
+        /* 鼠标悬浮预览气泡 */
+        .circle-badge .preview-tip {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #0f172a;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        /* 气泡小箭头 */
+        .circle-badge .preview-tip::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 8px;
+            height: 8px;
+            background: #0f172a;
+        }
+        .circle-badge:hover .preview-tip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 导航按钮组 */
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -110,7 +180,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             padding: 15px;
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.7);
@@ -125,11 +194,10 @@
         .nav-button:hover {
             background: #0ea5e9;
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
             border-color: #0ea5e9;
         }
 
-        /* 3. 明日方舟前线简讯 */
+        /* ================= 🎯 核心需求一：在线流式战术终端 ================= */
         .panel-header {
             display: flex;
             justify-content: space-between;
@@ -147,54 +215,57 @@
 
         .live-indicator {
             font-size: 0.75rem;
-            background: linear-gradient(135deg, #38ef7d, #11998e);
+            background: #10b981;
             color: white;
             padding: 4px 10px;
             border-radius: 20px;
             font-weight: bold;
-        }
-
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        /* 新闻卡片组件 */
-        .news-card {
-            background: rgba(255, 255, 255, 0.5);
-            border-left: 4px solid #0ea5e9;
-            padding: 16px 20px;
-            border-radius: 0 12px 12px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .news-card:hover {
-            background: #ffffff;
-            border-left-width: 6px;
-            transform: translateX(4px);
-        }
-
-        .news-meta {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.8rem;
-            color: #0ea5e9;
-            font-weight: 700;
+            gap: 6px;
         }
-
-        .news-title-text {
-            font-size: 1rem;
-            color: #334155;
-            line-height: 1.5;
-            font-weight: 500;
+        /* 呼吸灯动画 */
+        .live-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 1.5s infinite;
         }
+        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* ================= 右侧：大尺寸本地看板画框 ================= */
+        .terminal-log-box {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 14px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #38bdf8;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: inset 0 4px 20px rgba(0,0,0,0.3);
+        }
+        /* 终端滚动条美化 */
+        .terminal-log-box::-webkit-scrollbar { width: 5px; }
+        .terminal-log-box::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 4px; }
+
+        .log-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateY(5px);
+            animation: fadeUp 0.3s forwards ease;
+        }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .log-time { color: #64748b; margin-right: 8px; }
+        .log-tag-ak { color: #f43f5e; font-weight: bold; }
+        .log-tag-gs { color: #eab308; font-weight: bold; }
+        .log-quote { color: #f1f5f9; font-style: italic; display: block; padding-left: 15px; border-left: 2px solid #38bdf8; margin-top: 2px;}
+
+        /* 右侧看版相框 */
         .right-showcase {
             display: flex;
             justify-content: center;
@@ -208,11 +279,6 @@
             box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
             width: 100%;
             border: 1px solid rgba(255,255,255,0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .premium-frame:hover {
-            transform: translateY(-5px);
         }
 
         .artwork-window {
@@ -220,7 +286,6 @@
             height: 520px;
             border-radius: 16px;
             overflow: hidden;
-            /* 💡 自带超好看的渐变占位背景，即使没放图片，网页也绝对不会显得丑或者空洞！ */
             background: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%);
             display: flex;
             align-items: center;
@@ -230,7 +295,7 @@
         .artwork-window img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 自动撑满裁剪，绝不拉伸变形 */
+            object-fit: cover;
         }
 
         .frame-footer {
@@ -247,11 +312,90 @@
             font-size: 0.95rem;
         }
 
-        /* 手机端适配 */
+        /* ================= 🔮 全局高科技大详情弹窗 (Modal) ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 35px;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 15px;
+        }
+
+        .modal-icon { font-size: 2.5rem; }
+        .modal-title h3 { font-size: 1.4rem; color: #1e293b; }
+
+        .modal-body p {
+            font-size: 1rem;
+            color: #475569;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #f1f5f9;
+            padding-bottom: 6px;
+        }
+
+        .modal-body strong { color: #0f172a; }
+
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            color: #64748b;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .close-btn:hover { background: #e2e8f0; }
+
         @media (max-width: 900px) {
             .main-dashboard { grid-template-columns: 1fr; }
             .artwork-window { height: 380px; }
             .nav-grid { grid-template-columns: 1fr; }
+            .game-cards-entrance { top: 15px; right: 15px; }
         }
     </style>
 </head>
@@ -259,10 +403,8 @@
 
     <div class="main-dashboard">
         
-        <!-- 左侧信息栏 -->
         <div class="left-stream">
             
-            <!-- 1. 活力个人名片 -->
             <div class="rich-card profile-box">
                 <div class="profile-avatar">✨</div>
                 <div class="profile-text">
@@ -272,52 +414,40 @@
                         <span class="custom-badge badge-green">🎮 ACG Lover</span>
                     </div>
                 </div>
+
+                <div class="game-cards-entrance">
+                    <div class="circle-badge badge-ak" onclick="openGameModal('ak')">
+                        🦅
+                        <div class="preview-tip">📬 明日方舟 // 博士档案</div>
+                    </div>
+                    <div class="circle-badge badge-gs" onclick="openGameModal('gs')">
+                        👑
+                        <div class="preview-tip">🧭 原神 // 旅行者档案</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- 2. 快捷快捷导航组 -->
             <div class="nav-grid">
-                <a href=" " target="_blank" class="nav-button">
-                    📦 GitHub 仓库
-                </a >
-                <a href="https://www.bilibili.com" target="_blank" class="nav-button">
-                    📺 哔哩哔哩
-                </a >
-                <a href="https://ak.hypergryph.com" target="_blank" class="nav-button">
-                    🦅 明日方舟官网
-                </a >
+                <a href="https://github.com/crpeer" target="_blank" class="nav-button">📦 GitHub 仓库</a>
+                <a href="https://www.bilibili.com" target="_blank" class="nav-button">📺 哔哩哔哩</a>
+                <a href="https://ak.hypergryph.com" target="_blank" class="nav-button">🦅 明日方舟官网</a>
             </div>
 
-            <!-- 3. 明日方舟简讯板块（直接本地化，防止接口卡死） -->
             <div class="rich-card">
                 <div class="panel-header">
-                    <div class="panel-title">📡 明日方舟 // 罗德岛前线简讯</div>
-                    <span class="live-indicator">数据已就绪</span>
+                    <div class="panel-title">📟 PRTS // 全自动化核心战术终端</div>
+                    <span class="live-indicator">LIVE SYSTEM ACTIVE</span>
                 </div>
                 
-                <div class="news-list">
-                    <div class="news-card">
-                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">活动预告</span> 📅 06-18</div>
-                        <div class="news-title-text">【制作组通讯#42】即将开启全新限时侧影活动，核心干员资料整备中。</div>
+                <div class="terminal-log-box" id="terminal-screen">
                     </div>
-                    <div class="news-card">
-                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">系统更新</span> 📅 06-11</div>
-                        <div class="news-title-text">危机合约全新赛季【「切尔诺伯格」战区】正式接入，前线终端升级完毕。</div>
-                    </div>
-                    <div class="news-card">
-                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">周边情报</span> 📅 06-05</div>
-                        <div class="news-title-text">罗德岛假期系列衍生手办第二弹正式公开，即日起开放预约登记。</div>
-                    </div>
-                </div>
             </div>
 
         </div>
 
-        <!-- 右侧：高级拍立得画框 -->
         <div class="right-showcase">
             <div class="premium-frame">
                 <div class="artwork-window">
-                    <!-- 💡 核心修改：这里读取你本地同一个文件夹下的 character.jpg ！！！ -->
-                    <!-- 如果你还没放图片，它也会显示好看的粉蓝渐变色，绝对不露白、不显丑！ -->
                     <img src="./character.jpg" alt="看板娘" onerror="this.style.display='none'">
                 </div>
                 <div class="frame-footer">
@@ -329,5 +459,137 @@
 
     </div>
 
+    <div class="modal-overlay" id="global-modal" onclick="closeGameModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeGameModal()">×</button>
+            <div id="modal-content-inject">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 📊 游戏名片静态数据库（随心所欲修改你的UID和配置）
+        const gameData = {
+            ak: `
+                <div class="modal-header">
+                    <div class="modal-icon">🦅</div>
+                    <div class="modal-title">
+                        <h3>罗德岛高级指挥官战术履历</h3>
+                        <span style="font-size:0.8rem; color:#f43f5e; font-weight:bold;">ARKNIGHTS OPERATIONAL DOSSIER</span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p><span>战略代号:</span> <strong>Dr. Crpeer</strong></p>
+                    <p><span>终端UID:</span> <strong>12345678</strong></p>
+                    <p><span>指挥官等级:</span> <strong>Lv.120 (MAX)</strong></p>
+                    <p><span>精英二期干员:</span> <strong>76 位已签到</strong></p>
+                    <p><span>核心首席助战:</span> <strong>阿米娅 (升变)</strong></p>
+                    <p><span>危机合约极值:</span> <strong style="color:#f43f5e;">👑 阶层 24</strong></p>
+                </div>
+            `,
+            gs: `
+                <div class="modal-header">
+                    <div class="modal-icon">✨</div>
+                    <div class="modal-title">
+                        <h3>提瓦特星海旅行者资质凭证</h3>
+                        <span style="font-size:0.8rem; color:#0ea5e9; font-weight:bold;">TEYVAT TRAVELER ACCREDITATION</span>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p><span>旅行者昵称:</span> <strong>Crpeer</strong></p>
+                    <p><span>冒险凭证UID:</span> <strong>100000001</strong></p>
+                    <p><span>冒险等阶:</span> <strong>Lv.60 (登峰造极)</strong></p>
+                    <p><span>当前世界等级:</span> <strong>世界等级 8</strong></p>
+                    <p><span>深境螺旋记录:</span> <strong style="color:#eab308;">🌟 满星 36 星</strong></p>
+                    <p><span>核心主力战队:</span> <strong>神鹤万心 / 雷九万班</strong></p>
+                </div>
+            `
+        };
+
+        // 弹窗逻辑控制
+        function openGameModal(type) {
+            const modal = document.getElementById('global-modal');
+            const container = document.getElementById('modal-content-inject');
+            if (gameData[type]) {
+                container.innerHTML = gameData[type];
+                modal.classList.add('active');
+            }
+        }
+        function closeGameModal() {
+            document.getElementById('global-modal').classList.remove('active');
+        }
+
+        // 2. ⚡ 终极全自动“活”日志终端算法
+        const screen = document.getElementById('terminal-screen');
+
+        // 获取格式化时间戳
+        function getLogTime() {
+            const now = new Date();
+            return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+        }
+
+        // 纯前端动态模拟的高仿官方服务器事件日志库
+        const logTemplates = [
+            () => `<span class="log-tag-ak">[PRTS]</span> 正在全自动同步罗德岛外部战略节点... 状态: 正常`,
+            () => `<span class="log-tag-gs">[天理系统]</span> 正在扫描提瓦特大陆锚点坐标... 基础负载: 12.4%`,
+            () => `<span class="log-tag-ak">[PRTS]</span> 今日理智恢复算法正在稳定演算中... 预估未产生溢出。`,
+            () => `<span class="log-tag-gs">[冒险协会]</span> 凯瑟琳发来加密讯息：今日四个每日委托奖励已就绪。`,
+            () => `<span class="log-tag-ak">[前线简讯]</span> 危机合约切尔诺伯格战区防火墙数据校验通过。`,
+            () => `<span class="log-tag-gs">[原神情报]</span> 正在接入深境螺旋第12层数据链路... 记录未发生篡改。`
+        ];
+
+        // 核心函数：往屏幕追加一条真正的“在线抓取名言”+“全自动系统日志”
+        async function appendNewLog(isInitial = false) {
+            const timeStr = getLogTime();
+            let logText = "";
+
+            if (isInitial) {
+                // 首次打开网页时的欢迎日志
+                const today = new Date().toISOString().split('T')[0];
+                logText = `[SYSTEM] 战术终端启动成功。当前锚定日期: ${today}。正在连结云端二次元宣言中心...`;
+            } else {
+                // 随机抽取一条系统状态
+                const randomTemplate = logTemplates[Math.floor(Math.random() * logTemplates.length)];
+                logText = randomTemplate();
+            }
+
+            // ⚡ 引入全网最稳定的 Hitokoto 一言接口，证明网页数据永远在“在线更新”
+            let quoteHtml = "";
+            try {
+                const res = await fetch('https://v1.hitokoto.cn/?c=b&c=c'); // 限制只抓取动漫、游戏分类的名言
+                if (res.ok) {
+                    const data = await res.json();
+                    quoteHtml = `<span class="log-quote">“ ${data.hitokoto} —— 出自《${data.from}》”</span>`;
+                }
+            } catch (e) {
+                quoteHtml = `<span class="log-quote">“ 命运从不敲门，它会在你做出选择时轰然降临。 ”</span>`;
+            }
+
+            // 渲染到控制台
+            const line = document.createElement('div');
+            line.className = 'log-line';
+            line.innerHTML = `<span class="log-time">[${timeStr}]</span>${logText}${quoteHtml}`;
+            screen.appendChild(line);
+
+            // 保持终端滚动条永远在最底部
+            screen.scrollTop = screen.scrollHeight;
+
+            // 超过30条就自动清理旧日志，防止网页内存卡顿
+            if (screen.children.length > 30) {
+                screen.removeChild(screen.firstChild);
+            }
+        }
+
+        // 初始化跑马灯终端
+        async function initTerminal() {
+            await appendNewLog(true);  // 第一条：初始化日志
+            setTimeout(() => appendNewLog(), 1500); // 1.5秒后跳出第二条
+
+            // ➔ 之后每隔 5 秒钟，全自动在你的主页跳出一条全新的云端连线日志！
+            setInterval(appendNewLog, 5000);
+        }
+
+        window.addEventListener('DOMContentLoaded', initTerminal);
+    </script>
 </body>
 </html>
