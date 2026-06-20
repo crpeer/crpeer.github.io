@@ -3,266 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crpeer 的个人空间 ✨</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            /* 🌤️ 核心修改：用纯 CSS 代码渲染出动漫风的“日落晴空”渐变，包含朝气蓝、空气白和晚霞橙，不需要加载任何背景图，绝对不会卡死 */
-            background: linear-gradient(180deg, #7dd3fc 0%, #f1f5f9 60%, #fdba74 100%);
-            background-attachment: fixed;
-            color: #334155;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-        }
-
-        /* 主视窗大厅 */
-        .main-dashboard {
-            max-width: 1200px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.3fr 1fr; /* 左侧信息流，右侧看板大卡片 */
-            gap: 35px;
-        }
-
-        /* 极简清爽的白瓷磨砂质感卡片 */
-        .rich-card {
-            background: rgba(255, 255, 255, 0.82);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            transition: all 0.3s ease;
-        }
-
-        .rich-card:hover {
-            background: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.15);
-            border-color: rgba(2, 132, 199, 0.3);
-            transform: translateY(-3px);
-        }
-
-        /* 左侧信息流盒子 */
-        .left-stream {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        /* 1. 个人顶栏 */
-        .profile-box {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .profile-avatar {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
-        }
-
-        .profile-text h1 {
-            font-size: 2.2rem;
-            color: #0284c7;
-            font-weight: 800;
-        }
-
-        .badge-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .custom-badge {
-            font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        .badge-blue { background: #e0f2fe; color: #0369a1; }
-        .badge-green { background: #dcfce7; color: #15803d; }
-
-        /* 2. 导航按钮组 */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-
-        .nav-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
-            text-decoration: none;
-            color: #475569;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-
-        .nav-button:hover {
-            background: #0ea5e9;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
-            border-color: #0ea5e9;
-        }
-
-        /* 3. 明日方舟前线简讯 */
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .panel-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .live-indicator {
-            font-size: 0.75rem;
-            background: linear-gradient(135deg, #38ef7d, #11998e);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        /* 新闻卡片组件 */
-        .news-card {
-            background: rgba(255, 255, 255, 0.5);
-            border-left: 4px solid #0ea5e9;
-            padding: 16px 20px;
-            border-radius: 0 12px 12px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .news-card:hover {
-            background: #ffffff;
-            border-left-width: 6px;
-            transform: translateX(4px);
-        }
-
-        .news-meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.8rem;
-            color: #0ea5e9;
-            font-weight: 700;
-        }
-
-        .news-title-text {
-            font-size: 1rem;
-            color: #334155;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        /* ================= 右侧：大尺寸本地看板画框 ================= */
-        .right-showcase {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .premium-frame {
-            background: #ffffff;
-            padding: 18px;
-            border-radius: 24px;
-            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
-            width: 100%;
-            border: 1px solid rgba(255,255,255,0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .premium-frame:hover {
-            transform: translateY(-5px);
-        }
-
-        .artwork-window {
-            width: 100%;
-            height: 520px;
-            border-radius: 16px;
-            overflow: hidden;
-            /* 💡 自带超好看的渐变占位背景，即使没放图片，网页也绝对不会显得丑或者空洞！ */
-            background: linear-gradient(135deg, #e0f2fe 0%, #f3e8ff 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .artwork-window img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 自动撑满裁剪，绝不拉伸变形 */
-        }
-
-        .frame-footer {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 5px;
-        }
-
-        .frame-title {
-            font-weight: 700;
-            color: #1e293b;
-            font-size: 0.95rem;
-        }
-
-        /* 手机端适配 */
-        @media (max-width: 900px) {
-            .main-dashboard { grid-template-columns: 1fr; }
-            .artwork-window { height: 380px; }
-            .nav-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    <title>Crpeer 的个人主页 ✨</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="main-dashboard">
-        
-        <!-- 左侧信息栏 -->
         <div class="left-stream">
-            
-            <!-- 1. 活力个人名片 -->
             <div class="rich-card profile-box">
                 <div class="profile-avatar">✨</div>
                 <div class="profile-text">
@@ -272,62 +19,90 @@
                         <span class="custom-badge badge-green">🎮 ACG Lover</span>
                     </div>
                 </div>
+                <div class="game-cards-entrance">
+                    <div class="circle-badge badge-ak" onclick="openModal('ak')">🦅</div>
+                    <div class="circle-badge badge-gs" onclick="openModal('gs')">👑</div>
+                </div>
             </div>
 
-            <!-- 2. 快捷快捷导航组 -->
             <div class="nav-grid">
-                <a href=" " target="_blank" class="nav-button">
-                    📦 GitHub 仓库
-                </a >
-                <a href="https://www.bilibili.com" target="_blank" class="nav-button">
-                    📺 哔哩哔哩
-                </a >
-                <a href="https://ak.hypergryph.com" target="_blank" class="nav-button">
-                    🦅 明日方舟官网
-                </a >
+                <a href="https://github.com/crpeer" target="_blank" class="nav-button">📦 GitHub 仓库</a>
+                <a href="https://www.bilibili.com" target="_blank" class="nav-button">📺 哔哩哔哩</a>
+                <a href="https://ak.hypergryph.com" target="_blank" class="nav-button">🦅 明日方舟官网</a>
             </div>
 
-            <!-- 3. 明日方舟简讯板块（直接本地化，防止接口卡死） -->
             <div class="rich-card">
                 <div class="panel-header">
-                    <div class="panel-title">📡 明日方舟 // 罗德岛前线简讯</div>
-                    <span class="live-indicator">数据已就绪</span>
+                    <div class="panel-title">📢 实时资讯 // 游戏情报大厅</div>
+                    <span class="live-indicator" id="sync-status">云端连线中</span>
                 </div>
-                
-                <div class="news-list">
-                    <div class="news-card">
-                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">活动预告</span> 📅 06-18</div>
-                        <div class="news-title-text">【制作组通讯#42】即将开启全新限时侧影活动，核心干员资料整备中。</div>
-                    </div>
-                    <div class="news-card">
-                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">系统更新</span> 📅 06-11</div>
-                        <div class="news-title-text">危机合约全新赛季【「切尔诺伯格」战区】正式接入，前线终端升级完毕。</div>
-                    </div>
-                    <div class="news-card">
-                        <div class="news-meta"><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px;">周边情报</span> 📅 06-05</div>
-                        <div class="news-title-text">罗德岛假期系列衍生手办第二弹正式公开，即日起开放预约登记。</div>
-                    </div>
+                <div class="news-container" id="news-box">
+                    <div class="news-card-real"><div class="news-title">正在调取动态资讯数据流...</div></div>
                 </div>
             </div>
-
         </div>
 
-        <!-- 右侧：高级拍立得画框 -->
         <div class="right-showcase">
             <div class="premium-frame">
                 <div class="artwork-window">
-                    <!-- 💡 核心修改：这里读取你本地同一个文件夹下的 character.jpg ！！！ -->
-                    <!-- 如果你还没放图片，它也会显示好看的粉蓝渐变色，绝对不露白、不显丑！ -->
-                    <img src="./character.jpg" alt="看板娘" onerror="this.style.display='none'">
+                    <img src="character.jpg" alt="看板娘" onerror="this.src='https://i0.hdslb.com/bfs/article/767bc47900898be2bc820f188331e0cb6d45e43a.jpg'">
                 </div>
                 <div class="frame-footer">
-                    <div class="frame-title">🖼️ 看板插画展示</div>
-                    <div style="font-size:0.8rem; color:#94a3b8;">LOCAL IMAGE</div>
+                    <div>🖼️ 看板插画展示</div>
+                    <div style="font-size:0.8rem; color:#94a3b8;">STATIC HOST</div>
                 </div>
             </div>
         </div>
-
     </div>
 
+    <div class="modal-overlay" id="global-modal" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            
+            <div id="view-gs" style="display: none;">
+                <div class="hoyo-header">
+                    <div class="hoyo-avatar-box">
+                        <img src="character.jpg" onerror="this.src='https://i0.hdslb.com/bfs/article/767bc47900898be2bc820f188331e0cb6d45e43a.jpg'">
+                    </div>
+                    <div>
+                        <div class="hoyo-player-name">偏<span class="hoyo-player-lvl">Lv.58</span></div>
+                        <div class="hoyo-uid">天空岛 | UID 257999016</div>
+                    </div>
+                    <div class="hoyo-star-badge">🌟 归忆星旅</div>
+                </div>
+                <div class="hoyo-body">
+                    <div class="hoyo-stats-grid">
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-days">--</span><span class="hoyo-stat-lbl">活跃天数</span></div>
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-abyss">--</span><span class="hoyo-stat-lbl">深境螺旋</span></div>
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-achieve">--</span><span class="hoyo-stat-lbl">成就达成数</span></div>
+                        <div class="hoyo-stat-card"><span class="hoyo-stat-val" id="gs-chars">--</span><span class="hoyo-stat-lbl">获得角色数</span></div>
+                    </div>
+                    <div class="hoyo-sec-title">我的角色</div>
+                    <div class="hoyo-char-showcase">
+                        <div class="hoyo-char-header"><span>哥伦比娅 (❄️ 冰)</span><span style="color:#b08a35;">Lv.90</span></div>
+                        <div class="hoyo-weapon-bar"><span>🎻 帷间夜曲</span><span style="color: #8e8975;">Lv.90</span></div>
+                        <div class="hoyo-artifacts-row">
+                            <div class="hoyo-art-slot">+17</div><div class="hoyo-art-slot">+20</div><div class="hoyo-art-slot">+20</div><div class="hoyo-art-slot">+20</div><div class="hoyo-art-slot">+20</div>
+                        </div>
+                    </div>
+                    <div class="hoyo-sec-title">实时便笺 (🕒 云端每小时自动同步)</div>
+                    <div class="hoyo-notes-box">
+                        <div class="hoyo-note-line"><span>🌙 原粹树脂</span><strong id="gs-resin">-- / 200</strong></div>
+                        <div class="hoyo-note-line"><span>🪙 洞天财瓮</span><strong><span id="gs-coin">--</span> / 2400</strong></div>
+                        <div class="hoyo-note-line"><span>📜 每日委托剩余</span><strong id="gs-task">--</strong></div>
+                        <div class="hoyo-note-line"><span>🧭 探索派遣完成</span><strong id="gs-expedition">--</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-ak" style="display: none; padding: 30px; background: #1e293b; color: #fff;">
+                <h3>🦅 罗德岛战术履历</h3>
+                <p style="margin-top: 15px; color: #cbd5e1;">战略代号: Dr. Crpeer</p>
+                <p style="margin-top: 5px; color: #94a3b8; font-size: 0.85rem;">云端数据链路上线完毕。</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
 </body>
 </html>
