@@ -1,8 +1,6 @@
 name: 自动刷新原神数据
 
 on:
-  schedule:
-    - cron: '0 * * * *' # 定时调度：每小时执行一次自动化同步
   workflow_dispatch: # 允许在 GitHub 控制台手动触发流水线
 
 permissions:
